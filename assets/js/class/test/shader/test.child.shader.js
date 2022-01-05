@@ -4,13 +4,16 @@ export default {
         
         attribute vec3 aStartPosition;
         attribute vec3 aEndPosition;
-        attribute float aStartTime;
+        attribute float aDuration;
+        attribute float aDelay;
 
         void main(){
             vec3 newPosition = position;
             
-            // newPosition.x += 200.;
-            newPosition += aStartPosition;
+            // not working
+            float p = clamp(uTime, 0.0, aDuration);
+            
+            newPosition += mix(aStartPosition, aEndPosition, uTime);
 
             gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
         }

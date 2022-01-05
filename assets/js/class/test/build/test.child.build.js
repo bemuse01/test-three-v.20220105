@@ -5,7 +5,10 @@ import Shader from '../shader/test.child.shader.js'
 export default class{
     constructor({group}){
         this.param = {
-            count: 10000
+            count: 5000,
+            defaultDuration: 6,
+            randomDuration: 4,
+            delay: 5
         }
 
         this.init(group)
@@ -15,6 +18,7 @@ export default class{
     // init
     init(group){
         this.create(group)
+        // this.createTween()
     }
 
 
@@ -23,48 +27,86 @@ export default class{
         const prefabGeometry = new THREE.BoxGeometry(10, 10, 10)
         const prefabGeometryCount = prefabGeometry.attributes.position.count
 
-        console.log(prefabGeometry)
+        const geometry = new PrefabBufferGeometry(prefabGeometry, this.param.count)
 
-        const geomerty = new PrefabBufferGeometry(prefabGeometry, this.param.count)
+        geometry.createAttribute('aStartPosition', 3)
+        geometry.createAttribute('aEndPosition', 3)
+        geometry.createAttribute('aDuration', 1)
+        geometry.createAttribute('aDelay', 1)
 
-        geomerty.createAttribute('aStartPosition', 3)
-
-        const array = geomerty.attributes['aStartPosition'].array
+        const startPosArr = geometry.attributes['aStartPosition'].array
+        const endPosArr = geometry.attributes['aEndPosition'].array
+        const durationArr = geometry.attributes['aDuration'].array
+        const delayArr = geometry.attributes['aDelay'].array
 
         for(let i = 0; i < this.param.count; i++){
             const index = i * prefabGeometryCount * 3
             
-            const x = Math.random() * 1000 - 500
-            const y = Math.random() * 1000 - 500
-            const z = Math.random() * 1000 - 500
+            const sx = Math.random() * 1000 - 500
+            const sy = Math.random() * 1000 - 500
+            const sz = Math.random() * 1000 - 500
+
+            const ex = Math.random() * 1000 - 500
+            const ey = Math.random() * 1000 - 500
+            const ez = Math.random() * 1000 - 500
+
+            const duration = Math.random() * 10.0
+
+            const delay = Math.random() * this.param.delay
 
             for(let j = 0; j < prefabGeometryCount; j++){
                 const idx = index + j * 3
-                array[idx] = x
-                array[idx + 1] = y
-                array[idx + 2] = z
+
+                startPosArr[idx] = sx
+                startPosArr[idx + 1] = sy
+                startPosArr[idx + 2] = sz
+
+                endPosArr[idx] = ex
+                endPosArr[idx + 1] = ey
+                endPosArr[idx + 2] = ez
+
+                durationArr[idx] = duration
+                
+                delayArr[idx] = delay
             }
         }
 
-        // const material = new THREE.MeshBasicMaterial({
-        //     color: 0xffffff,
-        //     transparent: true,
-        //     opacity: 0.01
-        // })
         const material = new THREE.ShaderMaterial({
             vertexShader: Shader.vertex,
             fragmentShader: Shader.fragment,
             transparent: true,
             blending: THREE.AdditiveBlending,
             uniforms: {
-
+                uTime: {value: 0}
             }
         })
 
-        const mesh = new THREE.Mesh(geomerty, material)
+        this.mesh = new THREE.Mesh(geometry, material)
 
-        console.log(geomerty)
+        group.add(this.mesh)
+    }
 
-        group.add(mesh)
+
+    // tween
+    createTween(){
+        const start = {time: 0}
+        const end = {time: 1}
+
+        const tw = new TWEEN.Tween(start)
+        .to(end, 10000)
+        .onUpdate(() => this.updateTween(start))
+        .repeat(Infinity)
+        .start()
+    }
+    updateTween({time}){
+        this.mesh.material.uniforms['uTime'].value = time
+    }
+
+
+    // animate
+    animate(){
+        this.mesh.material.uniforms['uTime'].value += 1 / 60
+
+        this.mesh.material.uniforms['uTime'].value %= (this.param.randomDuration + this.param.defaultDuration + this.param.delay)
     }
 }
