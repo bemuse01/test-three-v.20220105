@@ -25,7 +25,6 @@ new Vue({
     methods: {
         init(){
             this.initThree()
-            this.initElement()
             this.animate()
 
             window.addEventListener('resize', this.onWindowResize, false)
@@ -67,7 +66,6 @@ new Vue({
         },
         animate(){
             this.render()
-            this.animateElement()
             requestAnimationFrame(this.animate)
         }
     }

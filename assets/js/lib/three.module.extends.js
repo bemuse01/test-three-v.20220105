@@ -132,7 +132,7 @@ PrefabBufferGeometry.prototype.bufferUvs = function() {
 PrefabBufferGeometry.prototype.createAttribute = function(name, itemSize, factory) {
   const buffer = new Float32Array(this.prefabCount * this.prefabVertexCount * itemSize);
   const attribute = new BufferAttribute(buffer, itemSize);
-  this.addAttribute(name, attribute);
+  this.setAttribute(name, attribute);
   if (factory) {
     const data = [];
     for (let i = 0; i < this.prefabCount; i++) {

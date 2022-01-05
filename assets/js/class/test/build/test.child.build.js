@@ -4,7 +4,7 @@ import {PrefabBufferGeometry} from '../../../lib/three.module.extends.js'
 export default class{
     constructor({group}){
         this.param = {
-            count: 100
+            count: 10
         }
 
         this.init(group)
@@ -28,6 +28,8 @@ export default class{
             opacity: 0.01
         })
         const mesh = new THREE.Mesh(geomerty, material)
+
+        console.log(geomerty)
 
         group.add(mesh)
     }
