@@ -2,25 +2,33 @@ import * as THREE from '../../../lib/three.module.js'
 import {PrefabBufferGeometry} from '../../../lib/three.module.extends.js'
 
 export default class{
-    constructor(){
+    constructor({group}){
         this.param = {
             count: 100
         }
 
-        this.init()
+        this.init(group)
     }
 
 
     // init
-    init(){
-
+    init(group){
+        this.create(group)
     }
 
 
     // create
-    create(){
+    create(group){
         const prefabGeometry = new THREE.BoxGeometry(50, 50, 50)
 
         const geomerty = new PrefabBufferGeometry(prefabGeometry, this.param.count)
+        const material = new THREE.MeshBasicMaterial({
+            color: 0xffffff,
+            transparent: true,
+            opacity: 0.01
+        })
+        const mesh = new THREE.Mesh(geomerty, material)
+
+        group.add(mesh)
     }
 }
