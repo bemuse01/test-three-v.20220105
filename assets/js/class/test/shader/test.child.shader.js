@@ -7,13 +7,13 @@ export default {
         attribute float aDuration;
         attribute float aDelay;
 
+        varying float vOpacity;
+
         void main(){
             vec3 newPosition = position;
             
-            // not working
-            float p = clamp(uTime, 0.0, aDuration);
-            
-            newPosition += mix(aStartPosition, aEndPosition, uTime);
+            float p = clamp(uTime - aDelay, 0.0, aDuration) / aDuration;
+            newPosition += mix(aStartPosition, aEndPosition, p);
 
             gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
         }

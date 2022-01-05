@@ -5,7 +5,7 @@ import Shader from '../shader/test.child.shader.js'
 export default class{
     constructor({group}){
         this.param = {
-            count: 5000,
+            count: 10000,
             defaultDuration: 6,
             randomDuration: 4,
             delay: 5
@@ -50,24 +50,25 @@ export default class{
             const ey = Math.random() * 1000 - 500
             const ez = Math.random() * 1000 - 500
 
-            const duration = Math.random() * 10.0
+            const duration = Math.random() * this.param.randomDuration + this.param.defaultDuration
 
             const delay = Math.random() * this.param.delay
 
             for(let j = 0; j < prefabGeometryCount; j++){
-                const idx = index + j * 3
+                const idx1 = index + j
+                const idx3 = index + j * 3
 
-                startPosArr[idx] = sx
-                startPosArr[idx + 1] = sy
-                startPosArr[idx + 2] = sz
+                startPosArr[idx3] = sx
+                startPosArr[idx3 + 1] = sy
+                startPosArr[idx3 + 2] = sz
 
-                endPosArr[idx] = ex
-                endPosArr[idx + 1] = ey
-                endPosArr[idx + 2] = ez
+                endPosArr[idx3] = ex
+                endPosArr[idx3 + 1] = ey
+                endPosArr[idx3 + 2] = ez
 
-                durationArr[idx] = duration
+                durationArr[idx1] = duration
                 
-                delayArr[idx] = delay
+                delayArr[idx1] = delay
             }
         }
 
