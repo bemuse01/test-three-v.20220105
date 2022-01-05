@@ -1,7 +1,5 @@
 import APP from './class/app/app.js'
-import MAP from './class/map/map.js'
-import OPEN from './class/open/open.js'
-import LEFT from './class/left/left.js'
+import TEST from './class/test/test.js'
 
 new Vue({
     el: '#wrap',
@@ -9,15 +7,8 @@ new Vue({
         return{
             objectModules: {
                 app: APP,
-                map: MAP
+                test: TEST
             },
-            elementModules: {
-                open: OPEN,
-                left: LEFT
-            },
-            elements: {
-                open: null
-            }
         }
     },
     mounted(){
@@ -59,27 +50,6 @@ new Vue({
             for(const i in OBJECT){
                 if(!OBJECT[i].animate) continue
                 OBJECT[i].animate(OBJECT)
-            }
-        },
-
-
-        // element
-        addElement(){
-            for(const module in this.elementModules){
-                this.elements[module] = null
-            } 
-        },
-        initElement(){
-            for(const module in this.elementModules){
-                const instance = this.elementModules[module]
-
-                this.elements[module] = new instance(OBJECT)
-            }  
-        },
-        animateElement(){
-            for(const i in this.elements){
-                if(!this.elements[i].animate) continue
-                this.elements[i].animate(OBJECT)
             }
         },
 
