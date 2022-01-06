@@ -10,6 +10,8 @@ export default class{
         
         const plane = new THREE.PlaneGeometry(width, height, widthSeg, heightSeg)
 
+        console.log(plane)
+
         this.position = plane.attributes.position
         this.index = plane.index
 
@@ -25,10 +27,14 @@ export default class{
 
     // create
     create(){
-        
+        this.createGeometry()
+        this.createMaterial()
+        this.mesh = new THREE.Mesh(this.geometry, this.material)
     }
     createGeometry(){
         this.geometry = new THREE.BufferGeometry()
+
+        const posArr = this.position.array
 
         const indexArr = this.index.array
         const indexCnt = this.index.count
@@ -43,39 +49,39 @@ export default class{
         const cb = new THREE.Vector3()
         const ab = new THREE.Vector3()
 
-        for(let i = 0; i < indexCnt; i++){
-            // positions
+        for(let i = 0; i < indexCnt / 3; i++){
             const idx = i * 3
 
-            const x = Math.random() * n - n2
-            const y = Math.random() * n - n2
-            const z = Math.random() * n - n2
+            const p1 = indexArr[idx] * 3
+            const p2 = indexArr[idx + 1] * 3
+            const p3 = indexArr[idx + 2] * 3
 
-            const ax = x + Math.random() * d - d2
-            const ay = y + Math.random() * d - d2
-            const az = z + Math.random() * d - d2
+            const a = i % this.widthSeg
+            const b = 0
 
-            const bx = x + Math.random() * d - d2
-            const by = y + Math.random() * d - d2
-            const bz = z + Math.random() * d - d2
+            const x1 = posArr[p1] + a
+            const y1 = posArr[p1 + 1] + b
+            const z1 = posArr[p1 + 2]
 
-            const cx = x + Math.random() * d - d2
-            const cy = y + Math.random() * d - d2
-            const cz = z + Math.random() * d - d2
+            const x2 = posArr[p2] + a
+            const y2 = posArr[p2 + 1] + b
+            const z2 = posArr[p2 + 2]
 
-            positions.push( ax, ay, az )
-            positions.push( bx, by, bz )
-            positions.push( cx, cy, cz )
+            const x3 = posArr[p3] + a
+            const y3 = posArr[p3 + 1] + b
+            const z3 = posArr[p3 + 2]
 
-            // flat face normals
+            positions.push(x1, y1, z1)
+            positions.push(x2, y2, z2)
+            positions.push(x3, y3, z3)
 
-            pA.set( ax, ay, az )
-            pB.set( bx, by, bz )
-            pC.set( cx, cy, cz )
+            pA.set(x1, y1, z1)
+            pB.set(x2, y2, z2)
+            pC.set(x3, y3, z3)
 
-            cb.subVectors( pC, pB )
-            ab.subVectors( pA, pB )
-            cb.cross( ab )
+            cb.subVectors(pC, pB)
+            ab.subVectors(pA, pB)
+            cb.cross(ab)
 
             cb.normalize()
 
@@ -83,12 +89,40 @@ export default class{
             const ny = cb.y
             const nz = cb.z
 
-            normals.push( nx, ny, nz )
-            normals.push( nx, ny, nz )
-            normals.push( nx, ny, nz )
+            normals.push(nx, ny, nz)
+            normals.push(nx, ny, nz)
+            normals.push(nx, ny, nz)
         }
 
-        // geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( positions, 3 ).onUpload( disposeArray ) );
-        // geometry.setAttribute( 'normal', new THREE.Float32BufferAttribute( normals, 3 ).onUpload( disposeArray ) );
+        this.geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
+        this.geometry.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3))
+    }
+    createMaterial(){
+        if(this.materialOpt.vertexShader){
+            this.material = new THREE.ShaderMaterial(this.materialOpt)
+        }else{
+            this.material = new THREE.MeshBasicMaterial(this.materialOpt)
+        }
+    }
+
+
+    // dispose
+    dispose(){
+    
+    }
+
+
+    // set
+    setAttribute(name, array, itemSize){
+        this.mesh.geometry.setAttribute(name, new THREE.BufferAttribute(array, itemSize))
+    }
+
+
+    // get
+    get(){
+        return this.mesh
+    }
+    getAttribute(name){
+        return this.mesh.geometry.attributes[name]
     }
 }
