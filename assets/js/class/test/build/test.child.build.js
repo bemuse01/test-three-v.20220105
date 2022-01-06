@@ -29,6 +29,8 @@ export default class{
 
         const geometry = new PrefabBufferGeometry(prefabGeometry, this.param.count)
 
+        console.log(geometry)
+
         geometry.createAttribute('aStartPosition', 3)
         geometry.createAttribute('aEndPosition', 3)
         geometry.createAttribute('aDuration', 1)

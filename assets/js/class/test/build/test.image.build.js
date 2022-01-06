@@ -1,4 +1,5 @@
 import * as THREE from '../../../lib/three.module.js'
+import Plane from '../../objects/plane.js'
 // import PrefabObject from '../../objects/prefab.js'
 
 export default class{
@@ -26,29 +27,33 @@ export default class{
         const widthSeg = ~~(this.param.width * this.param.ratio / 10)
         const heightSeg = ~~(this.param.height * this.param.ratio / 10)
 
+
+
+        // test 1
         const plane = new THREE.PlaneGeometry(width, height, widthSeg, heightSeg)
 
-        // const planePos = plane.attributes.position
-        // const planePosArr = planePos.array
+        const planePos = plane.attributes.position
+        const planePosArr = planePos.array
 
-        // const planeIndex = plane.index
+        const planeIndex = plane.index
         // const planeIndexCnt = planeIndex.count
-        // const planeIndexArr = planeIndex.array
+        const planeIndexCnt = 100 * 3
+        const planeIndexArr = planeIndex.array
 
-        // const geometry = new THREE.BufferGeometry()
-        // const position = new Float32Array(3 * 100)
+        const geometry = new THREE.BufferGeometry()
+        const position = new Float32Array(3 * planeIndexCnt)
 
-        // for(let i = 0; i < 3 * 100; i++){
-        //     const idx = planeIndexArr[i]
-        //     const index = idx * 3
-        //     position[i * 3] = planePosArr[index]
-        //     position[i * 3 + 1] = planePosArr[index + 1]
-        //     position[i * 3 + 2] = planePosArr[index + 2]
-        // }
+        for(let i = 0; i < planeIndexCnt; i++){
+            const idx = planeIndexArr[i]
+            const index = idx * 3
+            position[i * 3] = planePosArr[index]
+            position[i * 3 + 1] = planePosArr[index + 1]
+            position[i * 3 + 2] = planePosArr[index + 2]
+        }
 
-        // geometry.setAttribute('position', new THREE.BufferAttribute(position, 3))
+        geometry.setAttribute('position', new THREE.BufferAttribute(position, 3))
 
-        // group.add(new THREE.Mesh(geometry, new THREE.MeshBasicMaterial()))
+        group.add(new THREE.Mesh(geometry, new THREE.MeshBasicMaterial()))
 
         // const prefab = 
         // this.object = new PrefabObject({
@@ -58,5 +63,18 @@ export default class{
                 
         //     }
         // })
+
+
+
+        // test 2
+        // this.object = new Plane({
+        //     width, height, widthSeg: 2, heightSeg: 2,
+        //     materialOpt: {
+        //         color: 0xffffff,
+        //         transparent: true
+        //     }
+        // })
+
+        // console.log(this.object.get())
     }
 }
