@@ -1,7 +1,8 @@
 import * as THREE from '../../lib/three.module.js'
-import PUBLIC_METHOD from '../../method/method.js'
+import PublicMethod from '../../method/method.js'
 
-import CHILD from './build/test.child.build.js'
+import Child from './build/test.child.build.js'
+import Image from './build/test.image.build.js'
 
 export default class{
     constructor(){
@@ -13,7 +14,8 @@ export default class{
         }
 
         this.modules = {
-            child: CHILD,
+            // child: Child,
+            image: Image
         }
         this.group = {}
         this.comp = {}
@@ -55,8 +57,8 @@ export default class{
                 h: height
             },
             obj: {
-                w: PUBLIC_METHOD.getVisibleWidth(this.camera, 0),
-                h: PUBLIC_METHOD.getVisibleHeight(this.camera, 0)
+                w: PublicMethod.getVisibleWidth(this.camera, 0),
+                h: PublicMethod.getVisibleHeight(this.camera, 0)
             }
         }
     }
@@ -124,8 +126,8 @@ export default class{
                 h: height
             },
             obj: {
-                w: PUBLIC_METHOD.getVisibleWidth(this.camera, 0),
-                h: PUBLIC_METHOD.getVisibleHeight(this.camera, 0)
+                w: PublicMethod.getVisibleWidth(this.camera, 0),
+                h: PublicMethod.getVisibleHeight(this.camera, 0)
             }
         }
 
