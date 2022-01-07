@@ -2,6 +2,8 @@ import * as THREE from '../../../lib/three.module.js'
 // import Plane from '../../objects/plane.js'
 // import PrefabObject from '../../objects/prefab.js'
 import PlaneObject from '../../objects/planeObject.js'
+import Method from '../method/test.image.method.js'
+import Shader from '../shader/test.image.shader.js'
 
 export default class{
     constructor({group}){
@@ -17,17 +19,18 @@ export default class{
     
     // init
     init(group){
-        this.create(group)
+        const loader = new THREE.TextureLoader()
+
+        loader.load('./assets/src/1.jpg', texture => this.create(group, texture))
     }
 
 
     // create
-    create(group){
+    create(group, texture){
         const width = this.param.width * this.param.ratio
         const height = this.param.height * this.param.ratio
         const widthSeg = ~~(this.param.width * this.param.ratio / 10)
         const heightSeg = ~~(this.param.height * this.param.ratio / 10)
-
 
 
         // test 1
@@ -69,13 +72,25 @@ export default class{
 
 
         // test 2
+
+
         this.object = new PlaneObject({
             width, height, widthSeg, heightSeg,
             materialOpt: {
-                color: 0xffffff,
-                transparent: true
+                vertexShader: Shader.vertex,
+                fragmentShader: Shader.fragment,
+                transparent: true,
+                uniforms: {
+                    uTexture: {value: texture},
+                    uResolution: {value: new THREE.Vector2(width, height)}
+                }
             }
         })
+
+        const {uv} = Method.createAttribute({width, height})
+        // const uv = this.object.uv.array
+
+        this.object.setAttribute('aUv', uv, 2)
 
         group.add(this.object.get())
     }

@@ -13,6 +13,7 @@ export default class{
         console.log(plane)
 
         this.position = plane.attributes.position
+        this.uv = plane.attributes.uv
         this.index = plane.index
 
         this.init()
@@ -56,7 +57,7 @@ export default class{
             const p2 = indexArr[idx + 1] * 3
             const p3 = indexArr[idx + 2] * 3
 
-            const a = i % this.widthSeg
+            const a = 0
             const b = 0
 
             const x1 = posArr[p1] + a
