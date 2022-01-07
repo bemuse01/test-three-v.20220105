@@ -151,9 +151,9 @@ export default class{
     // resize
     resize(size){
         this.size = size
-
-        const width = this.size.obj.w
-        const height = this.size.obj.h
+        
+        const width = ~~(this.size.obj.w * this.param.scale)
+        const height = ~~(this.size.obj.h * this.param.scale)
         const widthSeg = ~~(width / 10)
         const heightSeg = ~~(height / 10)
 
