@@ -10,8 +10,6 @@ export default class{
         
         const plane = new THREE.PlaneGeometry(width, height, widthSeg, heightSeg)
 
-        console.log(plane)
-
         this.position = plane.attributes.position
         this.uv = plane.attributes.uv
         this.index = plane.index
@@ -28,12 +26,12 @@ export default class{
 
     // create
     create(){
-        this.createGeometry()
-        this.createMaterial()
-        this.mesh = new THREE.Mesh(this.geometry, this.material)
+        const geometry = this.createGeometry()
+        const material = this.createMaterial()
+        this.mesh = new THREE.Mesh(geometry, material)
     }
     createGeometry(){
-        this.geometry = new THREE.BufferGeometry()
+        const geometry = new THREE.BufferGeometry()
 
         const posArr = this.position.array
 
@@ -95,14 +93,16 @@ export default class{
             normals.push(nx, ny, nz)
         }
 
-        this.geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
-        this.geometry.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3))
+        geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
+        geometry.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3))
+
+        return geometry
     }
     createMaterial(){
         if(this.materialOpt.vertexShader){
-            this.material = new THREE.ShaderMaterial(this.materialOpt)
+            return new THREE.ShaderMaterial(this.materialOpt)
         }else{
-            this.material = new THREE.MeshBasicMaterial(this.materialOpt)
+            return new THREE.MeshBasicMaterial(this.materialOpt)
         }
     }
 
@@ -110,6 +110,19 @@ export default class{
     // dispose
     dispose(){
     
+    }
+
+
+    // resize
+    resize({width, height, widthSeg, heightSeg}){
+        const plane = new THREE.PlaneGeometry(width, height, widthSeg, heightSeg)
+
+        this.position = plane.attributes.position
+        this.uv = plane.attributes.uv
+        this.index = plane.index
+        
+        this.mesh.geometry.dispose()
+        this.mesh.geometry =  this.createGeometry()
     }
 
 
@@ -122,6 +135,12 @@ export default class{
     // get
     get(){
         return this.mesh
+    }
+    getGeometry(){
+        return this.mesh.geometry
+    }
+    getMaterial(){
+        return this.mesh.material
     }
     getAttribute(name){
         return this.mesh.geometry.attributes[name]

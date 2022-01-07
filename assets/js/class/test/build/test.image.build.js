@@ -1,17 +1,22 @@
 import * as THREE from '../../../lib/three.module.js'
-// import Plane from '../../objects/plane.js'
+import Plane from '../../objects/plane.js'
 // import PrefabObject from '../../objects/prefab.js'
 import PlaneObject from '../../objects/planeObject.js'
 import Method from '../method/test.image.method.js'
 import Shader from '../shader/test.image.shader.js'
 
 export default class{
-    constructor({group}){
+    constructor({group, size}){
+        this.size = size
+
         this.param = {
             width: 1920,
             height: 1080,
-            ratio: 0.5
+            ratio: 16 / 9,
+            rd: 1
         }
+
+        this.src = './assets/src/1.jpg'
 
         this.init(group)
     }
@@ -19,18 +24,17 @@ export default class{
     
     // init
     init(group){
-        const loader = new THREE.TextureLoader()
-
-        loader.load('./assets/src/1.jpg', texture => this.create(group, texture))
+        this.create(group)
     }
 
 
     // create
-    create(group, texture){
-        const width = this.param.width * this.param.ratio
-        const height = this.param.height * this.param.ratio
-        const widthSeg = ~~(this.param.width * this.param.ratio / 10)
-        const heightSeg = ~~(this.param.height * this.param.ratio / 10)
+    create(group){
+        const width = this.size.obj.w
+        const height = this.size.obj.h
+        const widthSeg = ~~(width / 10)
+        const heightSeg = ~~(height / 10)
+
 
 
         // test 1
@@ -72,7 +76,58 @@ export default class{
 
 
         // test 2
+        // const loader = new THREE.TextureLoader()
 
+        // loader.load('./assets/src/1.jpg', texture => this.onLoadTexture({width, height, widthSeg, heightSeg, texture, group}))
+
+
+
+        // test 3
+        const img = new Image()
+        img.src = this.src
+
+        img.onload = () => {
+            const canvas = Method.createTextureFromCanvas({img, size: this.size.el})
+            const texture = new THREE.CanvasTexture(canvas)
+
+            this.object = new PlaneObject({
+                width, height, widthSeg, heightSeg,
+                materialOpt: {
+                    vertexShader: Shader.vertex,
+                    fragmentShader: Shader.fragment,
+                    transparent: true,
+                    uniforms: {
+                        uTexture: {value: texture},
+                        uResolution: {value: new THREE.Vector2(this.size.el.w, this.size.el.h)}
+                    }
+                }
+            })
+
+            const {uv} = Method.createAttribute({width, height})
+            // const uv = this.object.uv.array
+
+            this.object.setAttribute('aUv', uv, 2)
+
+            group.add(this.object.get())
+        }
+    }
+    onLoadTexture({width, height, widthSeg, heightSeg, texture, group}){
+        // const planeAspect = width / height
+        // const imageAspect = texture.image.width / texture.image.height
+        // const aspect = imageAspect / planeAspect
+  
+        // texture.offset.x = aspect > 1 ? (1 - 1 / aspect) / 2 : 0
+        // texture.repeat.x = aspect > 1 ? 1 / aspect : 1
+  
+        // texture.offset.y = aspect > 1 ? 0 : (1 - aspect) / 2
+        // texture.repeat.y = aspect > 1 ? 1 : aspect
+
+        texture.wrapS = THREE.ClampToEdgeWrapping
+        texture.wrapT = THREE.RepeatWrapping
+
+        console.log(texture.image.width, texture.image.height)
+        console.log(width, height)
+        console.log(this.size.el.w, this.size.el.h)
 
         this.object = new PlaneObject({
             width, height, widthSeg, heightSeg,
@@ -82,16 +137,42 @@ export default class{
                 transparent: true,
                 uniforms: {
                     uTexture: {value: texture},
-                    uResolution: {value: new THREE.Vector2(width, height)}
+                    uResolution: {value: new THREE.Vector2(this.size.el.w, this.size.el.h)}
                 }
             }
         })
 
-        const {uv} = Method.createAttribute({width, height})
-        // const uv = this.object.uv.array
+        // const {uv} = Method.createAttribute({width, height})
 
-        this.object.setAttribute('aUv', uv, 2)
+        // this.object.setAttribute('aUv', uv, 2)
 
         group.add(this.object.get())
+    }
+
+
+    // resize
+    resize(size){
+        this.size = size
+
+        const width = this.size.obj.w
+        const height = this.size.obj.h
+        const widthSeg = ~~(width / 10)
+        const heightSeg = ~~(height / 10)
+
+        this.object.resize({width, height, widthSeg, heightSeg})
+
+        this.resizeTexture()
+    }
+    resizeTexture(){
+        const img = new Image()
+        img.src = this.src
+
+        img.onload = () => {
+            const canvas = Method.createTextureFromCanvas({img, size: this.size.el})
+            const texture = new THREE.CanvasTexture(canvas)
+
+            this.object.getMaterial().uniforms['uTexture'].value = texture
+            this.object.getMaterial().uniforms['uResolution'].value = new THREE.Vector2(this.size.el.w, this.size.el.h)
+        }
     }
 }
