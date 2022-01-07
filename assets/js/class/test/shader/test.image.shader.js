@@ -27,29 +27,38 @@ export default {
         varying vec2 vUv;
 
         void main(){
-            vec2 uv = gl_FragCoord.xy / uResolution.xy;
+            vec2 coord = gl_FragCoord.xy;
+            vec2 uv = coord / uResolution.xy;
 
-            float x = gl_FragCoord.x;
-            float y = gl_FragCoord.y;
+            vec2 hf = uResolution * uRatio;
+            vec2 offset = (uResolution - hf) * 0.5;
 
-            vec2 h = uResolution * uRatio;
-            vec2 offset = h * 0.5;
 
-            float nu, nv;            
 
-            if(x >= offset.x && x <= h.x + offset.x){
-                nu = (x - offset.x) / h.x;
-            }
+            // test 1
+            // vec2 nUv;
+
+            // if(coord.x >= offset.x && coord.x <= hf.x + offset.x){
+            //     nUv.x = (coord.x - offset.x) / hf.x;
+            // }
             
-            if(y >= offset.y && y <= h.y + offset.y){
-                nv = (y - offset.y) / h.y;
-            }
+            // if(coord.y >= offset.y && coord.y <= hf.y + offset.y){
+            //     nUv.y = (coord.y - offset.y) / hf.y;
+            // }
+            // vec4 tex = texture(uTexture, nUv);
 
-            vec4 tex = texture(uTexture, vec2(nu, nv));
-            // vec4 tex = texelFetch(uTexture, ivec2(gl_FragCoord.xy), 0);
+
+
+            // test 2
+            vec2 nUv;
+            nUv.x = clamp(distance(coord.x, offset.x) * sign(coord.x - offset.x) / hf.x, 0.0, 1.0);
+            nUv.y = clamp(distance(coord.y, offset.y) * sign(coord.y - offset.y) / hf.y, 0.0, 1.0);
+            vec4 tex = texture(uTexture, nUv);
+
+
 
             gl_FragColor = tex;
-            // gl_FragColor = vec4(nu, nv, 0.0, 1.0);
+            // gl_FragColor = vec4(nUv, 0.0, 1.0);
         }
     `
 }
