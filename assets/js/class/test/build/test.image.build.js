@@ -10,10 +10,7 @@ export default class{
         this.size = size
 
         this.param = {
-            width: 1920,
-            height: 1080,
-            ratio: 16 / 9,
-            rd: 1
+            scale: 0.5
         }
 
         this.src = './assets/src/1.jpg'
@@ -30,8 +27,8 @@ export default class{
 
     // create
     create(group){
-        const width = this.size.obj.w
-        const height = this.size.obj.h
+        const width = ~~(this.size.obj.w * this.param.scale)
+        const height = ~~(this.size.obj.h * this.param.scale)
         const widthSeg = ~~(width / 10)
         const heightSeg = ~~(height / 10)
 
@@ -87,7 +84,7 @@ export default class{
         img.src = this.src
 
         img.onload = () => {
-            const canvas = Method.createTextureFromCanvas({img, size: this.size.el})
+            const canvas = Method.createTextureFromCanvas({img, size: this.size.el, ...this.param})
             const texture = new THREE.CanvasTexture(canvas)
 
             this.object = new PlaneObject({
@@ -98,15 +95,20 @@ export default class{
                     transparent: true,
                     uniforms: {
                         uTexture: {value: texture},
-                        uResolution: {value: new THREE.Vector2(this.size.el.w, this.size.el.h)}
+                        uResolution: {value: new THREE.Vector2(this.size.el.w, this.size.el.h)},
+                        uRatio: {value: 0.5},
                     }
                 }
             })
 
-            const {uv} = Method.createAttribute({width, height})
+            console.log(width, height)
+
+            // const {uv} = Method.createAttribute({width: this.size.el.w * this.param.scale, height: this.size.el.h * this.param.scale})
             // const uv = this.object.uv.array
 
-            this.object.setAttribute('aUv', uv, 2)
+            // this.object.setAttribute('uv', uv, 2)
+
+            // this.object.get().scale.set(this.param.scale, this.param.scale, 1)
 
             group.add(this.object.get())
         }
@@ -124,10 +126,6 @@ export default class{
 
         texture.wrapS = THREE.ClampToEdgeWrapping
         texture.wrapT = THREE.RepeatWrapping
-
-        console.log(texture.image.width, texture.image.height)
-        console.log(width, height)
-        console.log(this.size.el.w, this.size.el.h)
 
         this.object = new PlaneObject({
             width, height, widthSeg, heightSeg,
