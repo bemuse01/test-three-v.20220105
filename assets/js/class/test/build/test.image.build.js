@@ -283,17 +283,20 @@ export default class{
 
         // if(this.objects.length === 0) return
 
-        // this.objects[this.idx].getMaterial().uniforms['uTime'].value += 1 / 60
-        // this.objects[(this.idx + 1) % this.objects.length].getMaterial().uniforms['uTime'].value += 1 / 60
+        // const current = this.idx
+        // const next = (this.idx + 1) % this.objects.length
 
-        // if(this.objects[this.idx].getUniform('uTime') >= this.slideTime){
-        //     this.objects[this.idx].setUniform('uPhase', IN)
-        //     this.objects[this.idx].setUniform('uTime', 0)
-        
-        //     this.objects[(this.idx + 1) % this.objects.length].setUniform('uPhase', OUT)
-        //     this.objects[(this.idx + 1) % this.objects.length].setUniform('uTime', 0)
+        // this.objects[current].getMaterial().uniforms['uTime'].value += 1 / 60
+        // this.objects[next].getMaterial().uniforms['uTime'].value += 1 / 60
 
-        //     this.idx = (this.idx + 1) % this.objects.length
+        // if(this.objects[current].getUniform('uTime') >= this.slideTime){
+        //     this.objects[current].setUniform('uPhase', IN)
+        //     this.objects[current].setUniform('uTime', 0)
+
+        //     this.objects[next].setUniform('uPhase', OUT)
+        //     this.objects[next].setUniform('uTime', 0)
+
+        //     this.idx = next
         // }
     }
 }
