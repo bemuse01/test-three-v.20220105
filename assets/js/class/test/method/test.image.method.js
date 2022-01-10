@@ -1,3 +1,5 @@
+import * as THREE from '../../../lib/three.module.js'
+
 export default {
     createAttribute({width, height}){
         const uv = []
@@ -10,7 +12,7 @@ export default {
 
         return {uv: new Float32Array(uv)}
     },
-    createAnimAttribute({position, widthSeg, heightSeg, defaultDuration, defaultDelay, randomDelay}){
+    createAnimAttribute({position, width, height, widthSeg, heightSeg, defaultDuration, defaultDelay, randomDelay, maxDelayX, maxDelayY, stretch}){
         const {array} = position
         const startPosition = []
         const endPosition = []
@@ -52,7 +54,9 @@ export default {
 
 
                 // cubic bezier control points
-                const sign = Math.sign((y1 + y2 + y3) / 3)
+                const cx = (x1 + x2 + x3) / 3
+                const cy = (y1 + y2 + y3) / 3
+                const sign = Math.sign(cy)
 
                 const rx0 = (Math.random() * 0.2 + 0.1) * 1000
                 const ry0 = (Math.random() * 0.2 + 0.1) * 1200 * sign
@@ -80,11 +84,12 @@ export default {
 
 
                 // delay
-                const del = d * j
+                const delayX = THREE.Math.mapLinear(cx, -width * 0.5, width * 0.5, 0.0, maxDelayX);
+                const delayY = THREE.Math.mapLinear(Math.abs(cy), 0, height * 0.5, maxDelayY, 0.0)
+
+                const del = delayX + delayY + (Math.random() * stretch * dur);
 
                 delay.push(del, del, del)
-                // delay.push(del, del, del)
-                // delay.push(del, del, del)
             }
         }
 

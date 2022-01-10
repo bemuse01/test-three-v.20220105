@@ -13,8 +13,11 @@ export default class{
             scale: 0.5,
             div: 4,
             defaultDuration: 1.5,
-            defaultDelay: 0.125,
-            randomDelay: 0.8
+            defaultDelay: 1.2,
+            randomDelay: 0.8,
+            maxDelayX: 0.9,
+            maxDelayY: 0.125,
+            stretch: 0.11
         }
 
         this.width = ~~(this.size.obj.w * this.param.scale)
@@ -112,7 +115,14 @@ export default class{
 
             const position = this.object.getAttribute('position')
 
-            const {startPosition, endPosition, control0, control1, duration, delay} = Method.createAnimAttribute({position, widthSeg: this.widthSeg, heightSeg: this.heightSeg, ...this.param})
+            const {startPosition, endPosition, control0, control1, duration, delay} = Method.createAnimAttribute({
+                position, 
+                width: this.width, 
+                height: this.height, 
+                widthSeg: this.widthSeg, 
+                heightSeg: this.heightSeg, 
+                ...this.param
+            })
 
             this.object.setAttribute('aStartPosition', new Float32Array(startPosition), 3)
             this.object.setAttribute('aEndPosition', new Float32Array(endPosition), 3)
