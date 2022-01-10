@@ -11,6 +11,8 @@ export default {
 
         uniform float uTime;
 
+        varying vec2 vUv;
+
         ${ShaderMethod.cubicBezier()}
 
         void main(){
@@ -21,12 +23,16 @@ export default {
             newPosition = cubicBezier(aStartPosition, aControl0, aControl1, aEndPosition, p);
 
             gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
+        
+            vUv = uv;
         }
     `,
     fragment: `
         uniform sampler2D uTexture;
         uniform vec2 uResolution;
         uniform float uRatio;
+
+        varying vec2 vUv;
 
         void main(){
             vec2 coord = gl_FragCoord.xy;
@@ -52,10 +58,15 @@ export default {
 
 
             // test 2
-            vec2 nUv;
-            nUv.x = clamp(distance(coord.x, offset.x) * sign(coord.x - offset.x) / hf.x, 0.0, 1.0);
-            nUv.y = clamp(distance(coord.y, offset.y) * sign(coord.y - offset.y) / hf.y, 0.0, 1.0);
-            vec4 tex = texture(uTexture, nUv);
+            // vec2 nUv;
+            // nUv.x = clamp(distance(coord.x, offset.x) * sign(coord.x - offset.x) / hf.x, 0.0, 1.0);
+            // nUv.y = clamp(distance(coord.y, offset.y) * sign(coord.y - offset.y) / hf.y, 0.0, 1.0);
+            // vec4 tex = texture(uTexture, nUv);
+
+
+
+            // test 3
+            vec4 tex = texture(uTexture, vUv);
 
 
 

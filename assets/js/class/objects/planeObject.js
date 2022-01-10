@@ -43,6 +43,7 @@ export default class{
 
         const positions = []
         const normals = []
+        const uv = []
 
         const pA = new THREE.Vector3()
         const pB = new THREE.Vector3()
@@ -95,11 +96,16 @@ export default class{
                 normals.push(nx, ny, nz)
                 normals.push(nx, ny, nz)
                 normals.push(nx, ny, nz)
+                
+                uv.push(j / w, 1 - i / h)
+                uv.push(j / w, 1 - i / h)
+                uv.push(j / w, 1 - i / h)
             }
         }
 
         geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
         geometry.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3))
+        geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2))
 
         return geometry
     }
