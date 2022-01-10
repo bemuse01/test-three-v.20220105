@@ -13,8 +13,8 @@ export default class{
             scale: 0.5,
             div: 4,
             defaultDuration: 1.5,
-            defaultDelay: 0.3,
-            randomDelay: 0.3
+            defaultDelay: 0.125,
+            randomDelay: 0.8
         }
 
         this.width = ~~(this.size.obj.w * this.param.scale)
