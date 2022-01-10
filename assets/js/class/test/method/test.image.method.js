@@ -12,7 +12,7 @@ export default {
 
         return {uv: new Float32Array(uv)}
     },
-    createAnimAttribute({position, width, height, widthSeg, heightSeg, defaultDuration, defaultDelay, randomDelay, maxDelayX, maxDelayY, stretch}){
+    createAnimAttribute({position, width, height, widthSeg, heightSeg, xRange, yRange, zRange, defaultDuration, defaultDelay, randomDelay, maxDelayX, maxDelayY, stretch}){
         const {array} = position
         const startPosition = []
         const endPosition = []
@@ -58,13 +58,13 @@ export default {
                 const cy = (y1 + y2 + y3) / 3
                 const sign = Math.sign(cy)
 
-                const rx0 = (Math.random() * 0.2 + 0.1) * 1000
-                const ry0 = (Math.random() * 0.2 + 0.1) * 1200 * sign
-                const rz0 = Math.random() * 500
+                const rx0 = (Math.random() * 0.2 + 0.1) * xRange
+                const ry0 = (Math.random() * 0.2 + 0.1) * yRange * sign
+                const rz0 = Math.random() * zRange
 
-                const rx1 = (Math.random() * 0.2 + 0.1) * 1000
-                const ry1 = (Math.random() * 0.2 + 0.1) * 1200 * -sign
-                const rz1 = Math.random() * 500
+                const rx1 = (Math.random() * 0.2 + 0.1) * xRange
+                const ry1 = (Math.random() * 0.2 + 0.1) * yRange * -sign
+                const rz1 = Math.random() * zRange
 
                 control0.push(rx0 + x1, ry0 + y1, rz0 + z1)
                 control0.push(rx0 + x2, ry0 + y2, rz0 + z2)

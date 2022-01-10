@@ -17,7 +17,10 @@ export default class{
             randomDelay: 0.8,
             maxDelayX: 0.9,
             maxDelayY: 0.125,
-            stretch: 0.11
+            stretch: 0.11,
+            xRange: 800,
+            yRange: 1000,
+            zRange: 400
         }
 
         this.width = ~~(this.size.obj.w * this.param.scale)
