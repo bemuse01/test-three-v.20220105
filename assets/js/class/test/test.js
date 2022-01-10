@@ -10,7 +10,7 @@ export default class{
             fov: 60,
             near: 0.1,
             far: 10000,
-            pos: 1000
+            pos: 100
         }
 
         this.modules = {

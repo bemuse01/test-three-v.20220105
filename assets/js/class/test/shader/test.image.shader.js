@@ -35,11 +35,11 @@ export default {
         varying vec2 vUv;
 
         void main(){
-            vec2 coord = gl_FragCoord.xy;
-            vec2 uv = coord / uResolution.xy;
+            // vec2 coord = gl_FragCoord.xy;
+            // vec2 uv = coord / uResolution.xy;
 
-            vec2 hf = uResolution * uRatio;
-            vec2 offset = (uResolution - hf) * 0.5;
+            // vec2 hf = uResolution * uRatio;
+            // vec2 offset = (uResolution - hf) * 0.5;
 
 
 

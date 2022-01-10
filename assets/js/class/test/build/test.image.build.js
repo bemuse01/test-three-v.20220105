@@ -11,22 +11,24 @@ export default class{
 
         this.param = {
             scale: 0.5,
-            div: 4,
+            div: 0.5,
             defaultDuration: 1.5,
             defaultDelay: 1.2,
             randomDelay: 0.8,
             maxDelayX: 0.9,
             maxDelayY: 0.125,
             stretch: 0.11,
-            xRange: 800,
-            yRange: 1000,
-            zRange: 400
+            xRange: 80,
+            yRange: 100,
+            zRange: 40,
+            width: 192,
+            height: 108
         }
 
-        this.width = ~~(this.size.obj.w * this.param.scale)
-        this.height = ~~(this.size.obj.h * this.param.scale)
-        this.widthSeg = ~~(this.width / this.param.div)
-        this.heightSeg = ~~(this.height / this.param.div)
+        this.width = ~~(this.param.width * this.param.scale)
+        this.height = ~~(this.param.height * this.param.scale)
+        this.widthSeg = ~~(this.width * 6)
+        this.heightSeg = ~~(this.height * 6)
 
         console.log(this.widthSeg, this.heightSeg)
 
@@ -179,30 +181,30 @@ export default class{
 
 
     // resize
-    resize(size){
-        this.size = size
+    // resize(size){
+    //     this.size = size
         
-        this.width = ~~(this.size.obj.w * this.param.scale)
-        this.height = ~~(this.size.obj.h * this.param.scale)
-        this.widthSeg = ~~(this.width / this.param.div)
-        this.heightSeg = ~~(this.height / this.param.div)
+    //     this.width = ~~(this.param.width * this.param.scale)
+    //     this.height = ~~(this.param.height * this.param.scale)
+    //     this.widthSeg = ~~(this.width * 6)
+    //     this.heightSeg = ~~(this.height * 6)
 
-        this.object.resize({width: this.width, height: this.height, widthSeg: this.widthSeg, heightSeg: this.heightSeg})
+    //     this.object.resize({width: this.width, height: this.height, widthSeg: this.widthSeg, heightSeg: this.heightSeg})
 
-        this.resizeTexture()
-    }
-    resizeTexture(){
-        const img = new Image()
-        img.src = this.src
+    //     this.resizeTexture()
+    // }
+    // resizeTexture(){
+    //     const img = new Image()
+    //     img.src = this.src
 
-        img.onload = () => {
-            const canvas = Method.createTextureFromCanvas({img, size: this.size.el})
-            const texture = new THREE.CanvasTexture(canvas)
+    //     img.onload = () => {
+    //         const canvas = Method.createTextureFromCanvas({img, size: this.size.el})
+    //         const texture = new THREE.CanvasTexture(canvas)
 
-            this.object.getMaterial().uniforms['uTexture'].value = texture
-            this.object.getMaterial().uniforms['uResolution'].value = new THREE.Vector2(this.size.el.w, this.size.el.h)
-        }
-    }
+    //         this.object.getMaterial().uniforms['uTexture'].value = texture
+    //         this.object.getMaterial().uniforms['uResolution'].value = new THREE.Vector2(this.size.el.w, this.size.el.h)
+    //     }
+    // }
 
     
     // animate
