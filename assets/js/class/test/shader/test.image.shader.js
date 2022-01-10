@@ -10,6 +10,7 @@ export default {
         attribute float aDelay;
 
         uniform float uTime;
+        uniform int uPhase;
 
         varying vec2 vUv;
 
@@ -19,6 +20,8 @@ export default {
             vec3 newPosition = position;
 
             float p = clamp(uTime - aDelay, 0.0, aDuration) / aDuration;
+
+            p = uPhase == 0 ? p : 1.0 - p;
 
             newPosition = cubicBezier(aStartPosition, aControl0, aControl1, aEndPosition, p);
 

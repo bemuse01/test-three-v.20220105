@@ -12,7 +12,7 @@ export default {
 
         return {uv: new Float32Array(uv)}
     },
-    createAnimAttribute({position, width, height, widthSeg, heightSeg, xRange, yRange, zRange, defaultDuration, defaultDelay, randomDelay, maxDelayX, maxDelayY, stretch}){
+    createAnimAttribute({position, width, height, widthSeg, heightSeg, xRange, yRange, zRange, defaultDuration, defaultDelay, randomDelay, maxDelayX, maxDelayY, stretch, phase}){
         const {array} = position
         const startPosition = []
         const endPosition = []
@@ -66,13 +66,15 @@ export default {
                 const ry1 = (Math.random() * 0.2 + 0.1) * yRange * -sign
                 const rz1 = Math.random() * zRange
 
-                control0.push(rx0 + x1, ry0 + y1, rz0 + z1)
-                control0.push(rx0 + x2, ry0 + y2, rz0 + z2)
-                control0.push(rx0 + x3, ry0 + y3, rz0 + z3)
+                const ph = phase === OUT ? 1 : -1
 
-                control1.push(rx1 + x1, ry1 + y1, rz1 + z1)
-                control1.push(rx1 + x2, ry1 + y2, rz1 + z2)
-                control1.push(rx1 + x3, ry1 + y3, rz1 + z3)
+                control0.push(rx0 + x1 * ph, ry0 + y1 * ph, rz0 + z1 * ph)
+                control0.push(rx0 + x2 * ph, ry0 + y2 * ph, rz0 + z2 * ph)
+                control0.push(rx0 + x3 * ph, ry0 + y3 * ph, rz0 + z3 * ph)
+
+                control1.push(rx1 + x1 * ph, ry1 + y1 * ph, rz1 + z1 * ph)
+                control1.push(rx1 + x2 * ph, ry1 + y2 * ph, rz1 + z2 * ph)
+                control1.push(rx1 + x3 * ph, ry1 + y3 * ph, rz1 + z3 * ph)
 
 
                 // duration

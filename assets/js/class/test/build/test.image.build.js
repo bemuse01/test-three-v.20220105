@@ -30,9 +30,20 @@ export default class{
         this.widthSeg = ~~(this.width * this.param.div)
         this.heightSeg = ~~(this.height * this.param.div)
 
-        console.log(this.widthSeg, this.heightSeg)
-
         this.src = './assets/src/1.jpg'
+        this.idx = 0
+        this.arr = [
+            {
+                src: './assets/src/1.jpg',
+                phase: OUT,
+                object: null
+            },
+            {
+                src: './assets/src/2.jpg',
+                phase: IN,
+                object: null
+            }
+        ]
 
         this.init(group)
     }
@@ -113,7 +124,8 @@ export default class{
                         uTexture: {value: texture},
                         uResolution: {value: new THREE.Vector2(this.size.el.w, this.size.el.h)},
                         uRatio: {value: 0.5},
-                        uTime: {value: null}
+                        uTime: {value: null},
+                        uPhase: {value: OUT},
                     }
                 }
             })
@@ -126,7 +138,8 @@ export default class{
                 height: this.height, 
                 widthSeg: this.widthSeg, 
                 heightSeg: this.heightSeg, 
-                ...this.param
+                ...this.param,
+                phase: OUT
             })
 
             this.object.setAttribute('aStartPosition', new Float32Array(startPosition), 3)
@@ -135,11 +148,6 @@ export default class{
             this.object.setAttribute('aControl1', new Float32Array(control1), 3)
             this.object.setAttribute('aDuration', new Float32Array(duration), 1)
             this.object.setAttribute('aDelay', new Float32Array(delay), 1)
-
-            // const {uv} = Method.createAttribute({width: this.size.el.w * this.param.scale, height: this.size.el.h * this.param.scale})
-            // const uv = this.object.uv.array
-
-            // this.object.setAttribute('uv', uv, 2)
 
             group.add(this.object.get())
         }
