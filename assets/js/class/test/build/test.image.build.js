@@ -32,18 +32,22 @@ export default class{
 
         this.src = './assets/src/1.jpg'
         this.idx = 0
-        this.arr = [
+        this.data = [
             {
                 src: './assets/src/1.jpg',
-                phase: OUT,
-                object: null
+                phase: OUT
             },
             {
                 src: './assets/src/2.jpg',
-                phase: IN,
-                object: null
+                phase: IN
+            },
+            {
+                src: './assets/src/3.jpg',
+                phase: IN
             }
         ]
+        this.objects = []
+        this.slideTime = this.param.defaultDuration + this.param.defaultDelay + this.param.randomDelay + 1
 
         this.init(group)
     }
@@ -151,6 +155,59 @@ export default class{
 
             group.add(this.object.get())
         }
+
+
+
+        // test 4
+        // this.data.forEach(({src, phase}, idx) => {
+
+        //     const img = new Image()
+        //     img.src = src
+
+        //     img.onload = () => {
+        //         const canvas = Method.createTextureFromCanvas({img, size: this.size.el, ...this.param})
+        //         const texture = new THREE.CanvasTexture(canvas)
+    
+        //         this.objects[idx] = new PlaneObject({
+        //             width: this.width, 
+        //             height: this.height, 
+        //             widthSeg: this.widthSeg, 
+        //             heightSeg: this.heightSeg,
+        //             materialOpt: {
+        //                 vertexShader: Shader.vertex,
+        //                 fragmentShader: Shader.fragment,
+        //                 transparent: true,
+        //                 uniforms: {
+        //                     uTexture: {value: texture},
+        //                     uTime: {value: null},
+        //                     uPhase: {value: phase},
+        //                 }
+        //             }
+        //         })
+    
+        //         const position = this.object.getAttribute('position')
+    
+        //         const {startPosition, endPosition, control0, control1, duration, delay} = Method.createAnimAttribute({
+        //             position, 
+        //             width: this.width, 
+        //             height: this.height, 
+        //             widthSeg: this.widthSeg, 
+        //             heightSeg: this.heightSeg, 
+        //             ...this.param,
+        //             phase
+        //         })
+    
+        //         this.object.setAttribute('aStartPosition', new Float32Array(startPosition), 3)
+        //         this.object.setAttribute('aEndPosition', new Float32Array(endPosition), 3)
+        //         this.object.setAttribute('aControl0', new Float32Array(control0), 3)
+        //         this.object.setAttribute('aControl1', new Float32Array(control1), 3)
+        //         this.object.setAttribute('aDuration', new Float32Array(duration), 1)
+        //         this.object.setAttribute('aDelay', new Float32Array(delay), 1)
+    
+        //         group.add(this.object.get())
+        //     }
+
+        // })
     }
     onLoadTexture({width, height, widthSeg, heightSeg, texture, group}){
         // const planeAspect = width / height
@@ -221,6 +278,22 @@ export default class{
 
         this.object.getMaterial().uniforms['uTime'].value += 1 / 60
 
-        this.object.getMaterial().uniforms['uTime'].value %= (this.param.defaultDuration + this.param.defaultDelay + this.param.randomDelay + 1)
+        this.object.getMaterial().uniforms['uTime'].value %= this.slideTime
+
+
+        // if(this.objects.length === 0) return
+
+        // this.objects[this.idx].getMaterial().uniforms['uTime'].value += 1 / 60
+        // this.objects[(this.idx + 1) % this.objects.length].getMaterial().uniforms['uTime'].value += 1 / 60
+
+        // if(this.objects[this.idx].getUniform('uTime') >= this.slideTime){
+        //     this.objects[this.idx].setUniform('uPhase', IN)
+        //     this.objects[this.idx].setUniform('uTime', 0)
+        
+        //     this.objects[(this.idx + 1) % this.objects.length].setUniform('uPhase', OUT)
+        //     this.objects[(this.idx + 1) % this.objects.length].setUniform('uTime', 0)
+
+        //     this.idx = (this.idx + 1) % this.objects.length
+        // }
     }
 }

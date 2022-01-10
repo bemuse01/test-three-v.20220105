@@ -146,6 +146,9 @@ export default class{
     setAttribute(name, array, itemSize){
         this.mesh.geometry.setAttribute(name, new THREE.BufferAttribute(array, itemSize))
     }
+    setUniform(name, value){
+        this.mesh.material.uniforms[name].value = value
+    }
 
 
     // get
@@ -160,5 +163,8 @@ export default class{
     }
     getAttribute(name){
         return this.mesh.geometry.attributes[name]
+    }
+    getUniform(name){
+        return this.mesh.material.uniforms[name].value
     }
 }
