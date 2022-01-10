@@ -36,7 +36,7 @@ export default class{
         const posArr = this.position.array
 
         const indexArr = this.index.array
-        // const indexCnt = this.index.count
+        const indexCnt = this.index.count
 
         const w = this.widthSeg * 2
         const h = this.heightSeg

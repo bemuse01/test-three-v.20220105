@@ -11,7 +11,7 @@ export default class{
 
         this.param = {
             scale: 0.5,
-            div: 4,
+            div: 10,
         }
 
         this.src = './assets/src/1.jpg'
@@ -32,6 +32,8 @@ export default class{
         const height = ~~(this.size.obj.h * this.param.scale)
         const widthSeg = ~~(width / this.param.div)
         const heightSeg = ~~(height / this.param.div)
+
+        console.log(widthSeg, heightSeg)
 
 
 
@@ -102,12 +104,14 @@ export default class{
                 }
             })
 
+            console.log(this.object.getGeometry().attributes.position)
+
             // const {uv} = Method.createAttribute({width: this.size.el.w * this.param.scale, height: this.size.el.h * this.param.scale})
             // const uv = this.object.uv.array
 
             // this.object.setAttribute('uv', uv, 2)
 
-            
+
 
             group.add(this.object.get())
         }
