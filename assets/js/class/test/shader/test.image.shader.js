@@ -1,30 +1,32 @@
+import ShaderMethod from '../../../method/method.shader.js'
+
 export default {
     vertex: `
-        varying vec2 vUv;
+        attribute vec3 aStartPosition;
+        attribute vec3 aEndPosition;
+        attribute vec3 aControl0;
+        attribute vec3 aControl1;
+        attribute float aDuration;
+        attribute float aDelay;
+
+        uniform float uTime;
+
+        ${ShaderMethod.cubicBezier()}
 
         void main(){
-            vUv = uv;
+            vec3 newPosition = position;
 
-            float scaleX = 0.5;
-            float scaleY = 0.5;
-            float scaleZ = 1.0;
+            float p = clamp(uTime - aDelay, 0.0, aDuration) / aDuration;
 
-            mat4 sPos = mat4(
-                            vec4(scaleX,0.0,0.0,0.0),
-                            vec4(0.0,scaleY,0.0,0.0),
-                            vec4(0.0,0.0,scaleZ,0.0),
-                            vec4(0.0,0.0,0.0,1.0)
-                        );
+            newPosition = cubicBezier(aStartPosition, aControl0, aControl1, aEndPosition, p);
 
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
         }
     `,
     fragment: `
         uniform sampler2D uTexture;
         uniform vec2 uResolution;
         uniform float uRatio;
-
-        varying vec2 vUv;
 
         void main(){
             vec2 coord = gl_FragCoord.xy;

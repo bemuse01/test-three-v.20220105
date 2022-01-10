@@ -10,7 +10,7 @@ export default {
 
         return {uv: new Float32Array(uv)}
     },
-    createAnimAttribute({position, widthSeg, heightSeg}){
+    createAnimAttribute({position, widthSeg, heightSeg, defaultDuration, defaultDelay, randomDelay}){
         const {array} = position
         const startPosition = []
         const endPosition = []
@@ -21,6 +21,8 @@ export default {
 
         const w = widthSeg * 2
         const h = heightSeg
+        
+        const d = defaultDuration / w
 
         for(let i = 0; i < h; i++){
             for(let j = 0; j < w; j++){
@@ -52,13 +54,13 @@ export default {
                 // cubic bezier control points
                 const sign = Math.sign((y1 + y2 + y3) / 3)
 
-                const rx0 = (Math.random() * 0.2 + 0.1) * 50
-                const ry0 = (Math.random() * 0.2 + 0.1) * 70 * sign
-                const rz0 = Math.random() * 20
+                const rx0 = (Math.random() * 0.2 + 0.1) * 1000
+                const ry0 = (Math.random() * 0.2 + 0.1) * 1200 * sign
+                const rz0 = Math.random() * 500
 
-                const rx1 = (Math.random() * 0.2 + 0.1) * 50
-                const ry1 = (Math.random() * 0.2 + 0.1) * 70 * -sign
-                const rz1 = Math.random() * 20
+                const rx1 = (Math.random() * 0.2 + 0.1) * 1000
+                const ry1 = (Math.random() * 0.2 + 0.1) * 1200 * -sign
+                const rz1 = Math.random() * 500
 
                 control0.push(rx0 + x1, ry0 + y1, rz0 + z1)
                 control0.push(rx0 + x2, ry0 + y2, rz0 + z2)
@@ -70,7 +72,7 @@ export default {
 
 
                 // duration
-                const dur = Math.random() * 0.5 + 0.5
+                const dur = Math.random() * randomDelay + defaultDelay
 
                 duration.push(dur, dur, dur)
                 // duration.push(dur, dur, dur)
@@ -78,7 +80,7 @@ export default {
 
 
                 // delay
-                const del = j * 0.02
+                const del = d * j
 
                 delay.push(del, del, del)
                 // delay.push(del, del, del)

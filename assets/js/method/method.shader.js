@@ -106,5 +106,17 @@ export default {
                 return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
             }
         `
+    },
+    cubicBezier(){
+        return `
+            vec3 cubicBezier(vec3 p0, vec3 c0, vec3 c1, vec3 p1, float t){
+                float tn = 1.0 - t;
+                return 
+                    tn * tn * tn * p0 + 
+                    3.0 * tn * tn * t * c0 + 
+                    3.0 * tn * t * t * c1 + 
+                    t * t * t * p1;
+            }
+        `
     }
 }

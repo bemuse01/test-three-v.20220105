@@ -11,8 +11,18 @@ export default class{
 
         this.param = {
             scale: 0.5,
-            div: 10,
+            div: 4,
+            defaultDuration: 1.5,
+            defaultDelay: 0.3,
+            randomDelay: 0.3
         }
+
+        this.width = ~~(this.size.obj.w * this.param.scale)
+        this.height = ~~(this.size.obj.h * this.param.scale)
+        this.widthSeg = ~~(this.width / this.param.div)
+        this.heightSeg = ~~(this.height / this.param.div)
+
+        console.log(this.widthSeg, this.heightSeg)
 
         this.src = './assets/src/1.jpg'
 
@@ -28,14 +38,6 @@ export default class{
 
     // create
     create(group){
-        const width = ~~(this.size.obj.w * this.param.scale)
-        const height = ~~(this.size.obj.h * this.param.scale)
-        const widthSeg = ~~(width / this.param.div)
-        const heightSeg = ~~(height / this.param.div)
-
-        console.log(widthSeg, heightSeg)
-
-
 
         // test 1
         // const plane = new THREE.PlaneGeometry(width, height, widthSeg, heightSeg)
@@ -91,7 +93,10 @@ export default class{
             const texture = new THREE.CanvasTexture(canvas)
 
             this.object = new PlaneObject({
-                width, height, widthSeg, heightSeg,
+                width: this.width, 
+                height: this.height, 
+                widthSeg: this.widthSeg, 
+                heightSeg: this.heightSeg,
                 materialOpt: {
                     vertexShader: Shader.vertex,
                     fragmentShader: Shader.fragment,
@@ -100,18 +105,26 @@ export default class{
                         uTexture: {value: texture},
                         uResolution: {value: new THREE.Vector2(this.size.el.w, this.size.el.h)},
                         uRatio: {value: 0.5},
+                        uTime: {value: null}
                     }
                 }
             })
 
-            console.log(this.object.getGeometry().attributes.position)
+            const position = this.object.getAttribute('position')
+
+            const {startPosition, endPosition, control0, control1, duration, delay} = Method.createAnimAttribute({position, widthSeg: this.widthSeg, heightSeg: this.heightSeg, ...this.param})
+
+            this.object.setAttribute('aStartPosition', new Float32Array(startPosition), 3)
+            this.object.setAttribute('aEndPosition', new Float32Array(endPosition), 3)
+            this.object.setAttribute('aControl0', new Float32Array(control0), 3)
+            this.object.setAttribute('aControl1', new Float32Array(control1), 3)
+            this.object.setAttribute('aDuration', new Float32Array(duration), 1)
+            this.object.setAttribute('aDelay', new Float32Array(delay), 1)
 
             // const {uv} = Method.createAttribute({width: this.size.el.w * this.param.scale, height: this.size.el.h * this.param.scale})
             // const uv = this.object.uv.array
 
             // this.object.setAttribute('uv', uv, 2)
-
-
 
             group.add(this.object.get())
         }
@@ -136,9 +149,10 @@ export default class{
                 vertexShader: Shader.vertex,
                 fragmentShader: Shader.fragment,
                 transparent: true,
+                side: THREE.DoubleSide,
                 uniforms: {
                     uTexture: {value: texture},
-                    uResolution: {value: new THREE.Vector2(this.size.el.w, this.size.el.h)}
+                    uResolution: {value: new THREE.Vector2(this.size.el.w, this.size.el.h)},
                 }
             }
         })
@@ -155,12 +169,12 @@ export default class{
     resize(size){
         this.size = size
         
-        const width = ~~(this.size.obj.w * this.param.scale)
-        const height = ~~(this.size.obj.h * this.param.scale)
-        const widthSeg = ~~(width / this.param.div)
-        const heightSeg = ~~(height / this.param.div)
+        this.width = ~~(this.size.obj.w * this.param.scale)
+        this.height = ~~(this.size.obj.h * this.param.scale)
+        this.widthSeg = ~~(this.width / this.param.div)
+        this.heightSeg = ~~(this.height / this.param.div)
 
-        this.object.resize({width, height, widthSeg, heightSeg})
+        this.object.resize({width: this.width, height: this.height, widthSeg: this.widthSeg, heightSeg: this.heightSeg})
 
         this.resizeTexture()
     }
@@ -175,5 +189,15 @@ export default class{
             this.object.getMaterial().uniforms['uTexture'].value = texture
             this.object.getMaterial().uniforms['uResolution'].value = new THREE.Vector2(this.size.el.w, this.size.el.h)
         }
+    }
+
+    
+    // animate
+    animate(){
+        if(!this.object) return 
+
+        this.object.getMaterial().uniforms['uTime'].value += 1 / 60
+
+        this.object.getMaterial().uniforms['uTime'].value %= (this.param.defaultDuration + this.param.defaultDelay + this.param.randomDelay + 1)
     }
 }
