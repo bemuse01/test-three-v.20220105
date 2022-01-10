@@ -11,7 +11,7 @@ export default class{
 
         this.param = {
             scale: 0.5,
-            div: 0.5,
+            div: 6,
             defaultDuration: 1.5,
             defaultDelay: 1.2,
             randomDelay: 0.8,
@@ -27,8 +27,8 @@ export default class{
 
         this.width = ~~(this.param.width * this.param.scale)
         this.height = ~~(this.param.height * this.param.scale)
-        this.widthSeg = ~~(this.width * 6)
-        this.heightSeg = ~~(this.height * 6)
+        this.widthSeg = ~~(this.width * this.param.div)
+        this.heightSeg = ~~(this.height * this.param.div)
 
         console.log(this.widthSeg, this.heightSeg)
 
