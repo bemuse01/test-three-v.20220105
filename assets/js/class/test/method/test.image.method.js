@@ -10,9 +10,24 @@ export default {
 
         return {uv: new Float32Array(uv)}
     },
+    createAnimAttribute({widthSeg, heightSeg}){
+        const startPosition = []
+        const endPosition = []
+        const control0 = []
+        const control1 = []
+        const duration = []
+        const delay = []
+
+        const w = widthSeg * 2
+        const h = heightSeg
+
+        for(let i = 0; i < h; i++){
+            for(let j = 0; j < w; i++){
+                
+            }
+        }
+    },
     createTextureFromCanvas({img, size}){
-        // const w = size.w * 0.5
-        // const h = size.h * 0.5
         const {w, h} = size
 
         const ctx = document.createElement('canvas').getContext('2d')

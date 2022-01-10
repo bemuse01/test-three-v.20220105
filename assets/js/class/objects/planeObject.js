@@ -36,7 +36,7 @@ export default class{
         const posArr = this.position.array
 
         const indexArr = this.index.array
-        const indexCnt = this.index.count
+        // const indexCnt = this.index.count
 
         const w = this.widthSeg * 2
         const h = this.heightSeg
@@ -124,7 +124,7 @@ export default class{
         this.height = height
         this.widthSeg = widthSeg
         this.heightSeg = heightSeg
-        
+
         const plane = new THREE.PlaneGeometry(width, height, widthSeg, heightSeg)
 
         this.position = plane.attributes.position

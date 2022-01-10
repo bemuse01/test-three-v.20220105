@@ -10,7 +10,8 @@ export default class{
         this.size = size
 
         this.param = {
-            scale: 0.5
+            scale: 0.5,
+            div: 4,
         }
 
         this.src = './assets/src/1.jpg'
@@ -29,8 +30,8 @@ export default class{
     create(group){
         const width = ~~(this.size.obj.w * this.param.scale)
         const height = ~~(this.size.obj.h * this.param.scale)
-        const widthSeg = ~~(width / 10)
-        const heightSeg = ~~(height / 10)
+        const widthSeg = ~~(width / this.param.div)
+        const heightSeg = ~~(height / this.param.div)
 
 
 
@@ -101,14 +102,12 @@ export default class{
                 }
             })
 
-            console.log(width, height)
-
             // const {uv} = Method.createAttribute({width: this.size.el.w * this.param.scale, height: this.size.el.h * this.param.scale})
             // const uv = this.object.uv.array
 
             // this.object.setAttribute('uv', uv, 2)
 
-            // this.object.get().scale.set(this.param.scale, this.param.scale, 1)
+            
 
             group.add(this.object.get())
         }
@@ -154,8 +153,8 @@ export default class{
         
         const width = ~~(this.size.obj.w * this.param.scale)
         const height = ~~(this.size.obj.h * this.param.scale)
-        const widthSeg = ~~(width / 10)
-        const heightSeg = ~~(height / 10)
+        const widthSeg = ~~(width / this.param.div)
+        const heightSeg = ~~(height / this.param.div)
 
         this.object.resize({width, height, widthSeg, heightSeg})
 
