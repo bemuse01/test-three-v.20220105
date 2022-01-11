@@ -87,7 +87,9 @@ export default {
 
                 // delay
                 const delayX = THREE.Math.mapLinear(cx, -width * 0.5, width * 0.5, 0.0, maxDelayX);
-                const delayY = THREE.Math.mapLinear(Math.abs(cy), 0, height * 0.5, maxDelayY, 0.0)
+                const delayY = phase === OUT ? 
+                THREE.Math.mapLinear(Math.abs(cy), 0, height * 0.5, maxDelayY, 0.0) :
+                THREE.Math.mapLinear(Math.abs(cy), 0, height * 0.5, 0.0, maxDelayY)
 
                 const del = delayX + delayY + (Math.random() * stretch * dur);
 

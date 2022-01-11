@@ -21,7 +21,7 @@ export default {
 
             float p = clamp(uTime - aDelay, 0.0, aDuration) / aDuration;
 
-            p = uPhase == 0 ? p : 1.0 - p;
+            p = uPhase == 0 ? 1.0 - p : p;
 
             newPosition = cubicBezier(aStartPosition, aControl0, aControl1, aEndPosition, p);
 
