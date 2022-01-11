@@ -39,12 +39,14 @@ export default class{
             // },
             {
                 src: './assets/src/1.jpg',
-                phase: OUT
+                phase: OUT,
+                z: 1,
             },
-            // {
-            //     src: './assets/src/2.jpg',
-            //     phase: IN
-            // }
+            {
+                src: './assets/src/2.jpg',
+                phase: IN,
+                z: 0
+            }
         ]
         this.objects = []
         this.slideTime = this.param.defaultDuration + this.param.defaultDelay + this.param.randomDelay + 1
@@ -161,8 +163,10 @@ export default class{
 
 
         // test 4
-        this.data.forEach(({src, phase}, idx) => {
+        this.data.forEach(({src, phase, z}, idx) => {
 
+            const positionGroup = new THREE.Group()
+            
             const img = new Image()
             img.src = src
 
@@ -207,11 +211,15 @@ export default class{
                 object.setAttribute('aDuration', new Float32Array(duration), 1)
                 object.setAttribute('aDelay', new Float32Array(delay), 1)
 
-                group.add(object.get())
+                positionGroup.add(object.get())
+
+                positionGroup.position.set(0, 0, z)
+
+                group.add(positionGroup)
 
                 this.objects.push(object)
 
-                this.createTween(object, phase)
+                this.createTween(object, phase, z, positionGroup)
 
                 if(idx === this.data.length - 1){
                     this.startTween()
@@ -257,14 +265,14 @@ export default class{
 
 
     // tween
-    createTween(object, phase){
-        const start = {time: 0, opacity: 1 - phase}
-        const end = {time: this.slideTime, opacity: phase}
+    createTween(object, phase, z, group){
+        const start = {time: 0, opacity: 1 - phase, z: z}
+        const end = {time: this.slideTime, opacity: phase, z: 1 - z}
         const uniforms = object.getMaterial().uniforms
 
         const tw = new TWEEN.Tween(start)
         .to(end, 5000)
-        .onUpdate(() => this.updateTween(start, uniforms))
+        .onUpdate(() => this.updateTween(start, uniforms, group))
         .easing(TWEEN.Easing.Quadratic.InOut)
         .repeat(Infinity)
         .repeatDelay(1000)
@@ -276,9 +284,10 @@ export default class{
     startTween(){
         this.tweens.forEach(tween => tween.start())
     }
-    updateTween({time, opacity}, {uTime, uOpacity}){
+    updateTween({time, opacity, z}, {uTime, uOpacity}, group){
         uTime.value = time
         // uOpacity.value = opacity
+        group.position.z = z
     }
 
 
