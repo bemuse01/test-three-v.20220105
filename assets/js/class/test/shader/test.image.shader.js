@@ -32,6 +32,7 @@ export default {
     `,
     fragment: `
         uniform sampler2D uTexture;
+        uniform float uOpacity;
 
         varying vec2 vUv;
 
@@ -45,11 +46,11 @@ export default {
 
 
             // test 3
-            vec4 tex = texture(uTexture, vUv);
+            vec3 tex = texture(uTexture, vUv).xyz;
 
 
 
-            gl_FragColor = tex;
+            gl_FragColor = vec4(tex, uOpacity);
             // gl_FragColor = vec4(nUv, 0.0, 1.0);
         }
     `

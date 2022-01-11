@@ -11,16 +11,16 @@ export default class{
 
         this.param = {
             scale: 0.5,
-            div: 6,
+            div: 5,
             defaultDuration: 1.5,
             defaultDelay: 1.2,
             randomDelay: 0.8,
             maxDelayX: 0.9,
             maxDelayY: 0.125,
             stretch: 0.11,
-            xRange: 80,
-            yRange: 100,
-            zRange: 40,
+            xRange: 100,
+            yRange: 120,
+            zRange: 50,
             width: 192,
             height: 108
         }
@@ -33,21 +33,23 @@ export default class{
         this.src = './assets/src/1.jpg'
         this.idx = 0
         this.data = [
+            // {
+            //     src: './assets/src/3.jpg',
+            //     phase: IN
+            // },
             {
                 src: './assets/src/1.jpg',
                 phase: OUT
             },
-            {
-                src: './assets/src/2.jpg',
-                phase: IN
-            },
-            {
-                src: './assets/src/3.jpg',
-                phase: IN
-            }
+            // {
+            //     src: './assets/src/2.jpg',
+            //     phase: IN
+            // }
         ]
         this.objects = []
         this.slideTime = this.param.defaultDuration + this.param.defaultDelay + this.param.randomDelay + 1
+
+        this.tweens = []
 
         this.init(group)
     }
@@ -108,106 +110,115 @@ export default class{
 
 
         // test 3
-        const img = new Image()
-        img.src = this.src
+        // const img = new Image()
+        // img.src = this.src
 
-        img.onload = () => {
-            const canvas = Method.createTextureFromCanvas({img, size: this.size.el, ...this.param})
-            const texture = new THREE.CanvasTexture(canvas)
+        // img.onload = () => {
+        //     const canvas = Method.createTextureFromCanvas({img, size: this.size.el, ...this.param})
+        //     const texture = new THREE.CanvasTexture(canvas)
 
-            this.object = new PlaneObject({
-                width: this.width, 
-                height: this.height, 
-                widthSeg: this.widthSeg, 
-                heightSeg: this.heightSeg,
-                materialOpt: {
-                    vertexShader: Shader.vertex,
-                    fragmentShader: Shader.fragment,
-                    transparent: true,
-                    uniforms: {
-                        uTexture: {value: texture},
-                        uResolution: {value: new THREE.Vector2(this.size.el.w, this.size.el.h)},
-                        uRatio: {value: 0.5},
-                        uTime: {value: null},
-                        uPhase: {value: OUT},
-                    }
-                }
-            })
+        //     this.object = new PlaneObject({
+        //         width: this.width, 
+        //         height: this.height, 
+        //         widthSeg: this.widthSeg, 
+        //         heightSeg: this.heightSeg,
+        //         materialOpt: {
+        //             vertexShader: Shader.vertex,
+        //             fragmentShader: Shader.fragment,
+        //             transparent: true,
+        //             uniforms: {
+        //                 uTexture: {value: texture},
+        //                 uResolution: {value: new THREE.Vector2(this.size.el.w, this.size.el.h)},
+        //                 uRatio: {value: 0.5},
+        //                 uTime: {value: null},
+        //                 uPhase: {value: OUT},
+        //             }
+        //         }
+        //     })
 
-            const position = this.object.getAttribute('position')
+        //     const position = this.object.getAttribute('position')
 
-            const {startPosition, endPosition, control0, control1, duration, delay} = Method.createAnimAttribute({
-                position, 
-                width: this.width, 
-                height: this.height, 
-                widthSeg: this.widthSeg, 
-                heightSeg: this.heightSeg, 
-                ...this.param,
-                phase: OUT
-            })
+        //     const {startPosition, endPosition, control0, control1, duration, delay} = Method.createAnimAttribute({
+        //         position, 
+        //         width: this.width, 
+        //         height: this.height, 
+        //         widthSeg: this.widthSeg, 
+        //         heightSeg: this.heightSeg, 
+        //         ...this.param,
+        //         phase: OUT
+        //     })
 
-            this.object.setAttribute('aStartPosition', new Float32Array(startPosition), 3)
-            this.object.setAttribute('aEndPosition', new Float32Array(endPosition), 3)
-            this.object.setAttribute('aControl0', new Float32Array(control0), 3)
-            this.object.setAttribute('aControl1', new Float32Array(control1), 3)
-            this.object.setAttribute('aDuration', new Float32Array(duration), 1)
-            this.object.setAttribute('aDelay', new Float32Array(delay), 1)
+        //     this.object.setAttribute('aStartPosition', new Float32Array(startPosition), 3)
+        //     this.object.setAttribute('aEndPosition', new Float32Array(endPosition), 3)
+        //     this.object.setAttribute('aControl0', new Float32Array(control0), 3)
+        //     this.object.setAttribute('aControl1', new Float32Array(control1), 3)
+        //     this.object.setAttribute('aDuration', new Float32Array(duration), 1)
+        //     this.object.setAttribute('aDelay', new Float32Array(delay), 1)
 
-            group.add(this.object.get())
-        }
+        //     group.add(this.object.get())
+        // }
 
 
 
         // test 4
-        // this.data.forEach(({src, phase}, idx) => {
+        this.data.forEach(({src, phase}, idx) => {
 
-        //     const img = new Image()
-        //     img.src = src
+            const img = new Image()
+            img.src = src
 
-        //     img.onload = () => {
-        //         const canvas = Method.createTextureFromCanvas({img, size: this.size.el, ...this.param})
-        //         const texture = new THREE.CanvasTexture(canvas)
+            img.onload = () => {
+                const canvas = Method.createTextureFromCanvas({img, size: this.size.el, ...this.param})
+                const texture = new THREE.CanvasTexture(canvas)
     
-        //         this.objects[idx] = new PlaneObject({
-        //             width: this.width, 
-        //             height: this.height, 
-        //             widthSeg: this.widthSeg, 
-        //             heightSeg: this.heightSeg,
-        //             materialOpt: {
-        //                 vertexShader: Shader.vertex,
-        //                 fragmentShader: Shader.fragment,
-        //                 transparent: true,
-        //                 uniforms: {
-        //                     uTexture: {value: texture},
-        //                     uTime: {value: null},
-        //                     uPhase: {value: phase},
-        //                 }
-        //             }
-        //         })
+                const object = new PlaneObject({
+                    width: this.width, 
+                    height: this.height, 
+                    widthSeg: this.widthSeg, 
+                    heightSeg: this.heightSeg,
+                    materialOpt: {
+                        vertexShader: Shader.vertex,
+                        fragmentShader: Shader.fragment,
+                        transparent: true,
+                        uniforms: {
+                            uTexture: {value: texture},
+                            uTime: {value: null},
+                            uPhase: {value: phase},
+                            uOpacity: {value: 1}
+                        }
+                    }
+                })
     
-        //         const position = this.object.getAttribute('position')
+                const position = object.getAttribute('position')
     
-        //         const {startPosition, endPosition, control0, control1, duration, delay} = Method.createAnimAttribute({
-        //             position, 
-        //             width: this.width, 
-        //             height: this.height, 
-        //             widthSeg: this.widthSeg, 
-        //             heightSeg: this.heightSeg, 
-        //             ...this.param,
-        //             phase
-        //         })
+                const {startPosition, endPosition, control0, control1, duration, delay} = Method.createAnimAttribute({
+                    position, 
+                    width: this.width, 
+                    height: this.height, 
+                    widthSeg: this.widthSeg, 
+                    heightSeg: this.heightSeg, 
+                    ...this.param,
+                    phase
+                })
     
-        //         this.object.setAttribute('aStartPosition', new Float32Array(startPosition), 3)
-        //         this.object.setAttribute('aEndPosition', new Float32Array(endPosition), 3)
-        //         this.object.setAttribute('aControl0', new Float32Array(control0), 3)
-        //         this.object.setAttribute('aControl1', new Float32Array(control1), 3)
-        //         this.object.setAttribute('aDuration', new Float32Array(duration), 1)
-        //         this.object.setAttribute('aDelay', new Float32Array(delay), 1)
-    
-        //         group.add(this.object.get())
-        //     }
+                object.setAttribute('aStartPosition', new Float32Array(startPosition), 3)
+                object.setAttribute('aEndPosition', new Float32Array(endPosition), 3)
+                object.setAttribute('aControl0', new Float32Array(control0), 3)
+                object.setAttribute('aControl1', new Float32Array(control1), 3)
+                object.setAttribute('aDuration', new Float32Array(duration), 1)
+                object.setAttribute('aDelay', new Float32Array(delay), 1)
 
-        // })
+                group.add(object.get())
+
+                this.objects.push(object)
+
+                this.createTween(object, phase)
+
+                if(idx === this.data.length - 1){
+                    this.startTween()
+                }
+            }
+
+        })
     }
     onLoadTexture({width, height, widthSeg, heightSeg, texture, group}){
         // const planeAspect = width / height
@@ -245,6 +256,32 @@ export default class{
     }
 
 
+    // tween
+    createTween(object, phase){
+        const start = {time: 0, opacity: 1 - phase}
+        const end = {time: this.slideTime, opacity: phase}
+        const uniforms = object.getMaterial().uniforms
+
+        const tw = new TWEEN.Tween(start)
+        .to(end, 5000)
+        .onUpdate(() => this.updateTween(start, uniforms))
+        .easing(TWEEN.Easing.Quadratic.InOut)
+        .repeat(Infinity)
+        .repeatDelay(1000)
+        .yoyo(true)
+
+        this.tweens.push(tw)
+
+    }
+    startTween(){
+        this.tweens.forEach(tween => tween.start())
+    }
+    updateTween({time, opacity}, {uTime, uOpacity}){
+        uTime.value = time
+        // uOpacity.value = opacity
+    }
+
+
     // resize
     // resize(size){
     //     this.size = size
@@ -273,30 +310,31 @@ export default class{
 
     
     // animate
-    animate(){
-        if(!this.object) return 
+    // animate(){
+    //     // if(!this.object) return 
 
-        this.object.getMaterial().uniforms['uTime'].value += 1 / 60
+    //     // this.object.getMaterial().uniforms['uTime'].value += 1 / 60
 
-        this.object.getMaterial().uniforms['uTime'].value %= this.slideTime
+    //     // this.object.getMaterial().uniforms['uTime'].value %= this.slideTime
 
 
-        // if(this.objects.length === 0) return
+    //     if(this.objects.length !== this.data.length) return
 
-        // const current = this.idx
-        // const next = (this.idx + 1) % this.objects.length
+    //     const current = this.idx
+    //     // const next = (this.idx - 1) < 0 ? this.objects.length - 1 : this.idx - 1
+    //     // const next = (this.idx + 1) % this.objects.length
 
-        // this.objects[current].getMaterial().uniforms['uTime'].value += 1 / 60
-        // this.objects[next].getMaterial().uniforms['uTime'].value += 1 / 60
+    //     this.objects[current].getMaterial().uniforms['uTime'].value += 1 / 60
+    //     // this.objects[next].getMaterial().uniforms['uTime'].value += 1 / 60
 
-        // if(this.objects[current].getUniform('uTime') >= this.slideTime){
-        //     this.objects[current].setUniform('uPhase', IN)
-        //     this.objects[current].setUniform('uTime', 0)
+    //     if(this.objects[current].getUniform('uTime') >= this.slideTime){
+    //         // this.objects[current].setUniform('uPhase', IN)
+    //         this.objects[current].setUniform('uTime', 0)
 
-        //     this.objects[next].setUniform('uPhase', OUT)
-        //     this.objects[next].setUniform('uTime', 0)
+    //         // this.objects[next].setUniform('uPhase', OUT)
+    //         // this.objects[next].setUniform('uTime', 0)
 
-        //     this.idx = next
-        // }
-    }
+    //         // this.idx = next
+    //     }
+    // }
 }
