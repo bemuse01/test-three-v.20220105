@@ -11,7 +11,7 @@ export default class{
 
         this.param = {
             scale: 0.5,
-            div: 3,
+            div: 6,
             defaultDuration: 1.5,
             defaultDelay: 1.2,
             randomDelay: 0.8,
@@ -22,7 +22,8 @@ export default class{
             yRange: 120,
             zRange: 50,
             width: 192,
-            height: 108
+            height: 108,
+            z: 0.1
         }
 
         this.width = ~~(this.param.width * this.param.scale)
@@ -40,7 +41,7 @@ export default class{
             {
                 src: './assets/src/1.jpg',
                 phase: OUT,
-                z: 1,
+                z: this.param.z,
             },
             {
                 src: './assets/src/2.jpg',
@@ -267,7 +268,7 @@ export default class{
     // tween
     createTween(object, phase, z, group){
         const start = {time: 0, opacity: 1 - phase, z: z}
-        const end = {time: this.slideTime, opacity: phase, z: 1 - z}
+        const end = {time: this.slideTime, opacity: phase, z: this.param.z - z}
         const uniforms = object.getMaterial().uniforms
 
         const tw = new TWEEN.Tween(start)
