@@ -12,17 +12,17 @@ export default class{
         console.log(this.size.obj)
 
         this.param = {
-            scale: 0.5,
-            div: 3,
+            scale: 0.6,
+            div: 2,
             defaultDuration: 1.5,
             defaultDelay: 1.2,
             randomDelay: 0.8,
             maxDelayX: 0.9,
             maxDelayY: 0.125,
             stretch: 0.11,
-            xRange: 50,
-            yRange: 70,
-            zRange: 20,
+            xRange: 60,
+            yRange: 80,
+            zRange: 30,
             width: 192,
             height: 108,
             z: 0.1
@@ -195,6 +195,8 @@ export default class{
                         }
                     }
                 })
+
+                console.log(object.getGeometry())
     
                 const position = object.getAttribute('position')
     
