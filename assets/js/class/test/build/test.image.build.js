@@ -13,7 +13,7 @@ export default class{
 
         this.param = {
             scale: 0.5,
-            div: 6,
+            div: 3,
             defaultDuration: 1.5,
             defaultDelay: 1.2,
             randomDelay: 0.8,
@@ -181,7 +181,8 @@ export default class{
                     height: this.height, 
                     widthSeg: this.widthSeg, 
                     heightSeg: this.heightSeg,
-                    blending: THREE.AdditiveBlending,
+                    // blending: THREE.AdditiveBlending,
+                    // side: THREE.DoubleSide,
                     materialOpt: {
                         vertexShader: Shader.vertex,
                         fragmentShader: Shader.fragment,
@@ -230,6 +231,17 @@ export default class{
             }
 
         })
+
+
+        // const texture = new THREE.TextureLoader().load(this.src)
+        // const geometry = new THREE.PlaneGeometry(92, 54, 1, 1)
+
+        // group.add(new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
+        //     map: texture,
+        //     transparent: true
+        // })))
+
+        // console.log(geometry)
     }
 
 
