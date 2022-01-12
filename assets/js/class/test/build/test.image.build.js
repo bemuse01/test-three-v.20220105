@@ -9,6 +9,8 @@ export default class{
     constructor({group, size}){
         this.size = size
 
+        console.log(this.size.obj)
+
         this.param = {
             scale: 0.5,
             div: 6,
@@ -30,6 +32,12 @@ export default class{
         this.height = ~~(this.param.height * this.param.scale)
         this.widthSeg = ~~(this.width * this.param.div)
         this.heightSeg = ~~(this.height * this.param.div)
+
+        const rw = this.width / this.size.obj.w
+        const rh = this.height / this.size.obj.h
+
+        this.textureWidth = rw * this.size.el.w
+        this.textureHeight = rh * this.size.el.h
 
         this.src = './assets/src/1.jpg'
         this.idx = 0
@@ -165,7 +173,7 @@ export default class{
             img.src = src
 
             img.onload = () => {
-                const canvas = Method.createTextureFromCanvas({img, size: this.size.el, ...this.param})
+                const canvas = Method.createTextureFromCanvas({img, size: {w: this.textureWidth, h: this.textureHeight}, ...this.param})
                 const texture = new THREE.CanvasTexture(canvas)
     
                 const object = new PlaneObject({
