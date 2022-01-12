@@ -62,19 +62,19 @@ export default {
                 const ry0 = (Math.random() * 0.2 + 0.1) * yRange * sign
                 const rz0 = Math.random() * zRange
 
-                const rx1 = (Math.random() * 0.2 + 0.1) * xRange
-                const ry1 = (Math.random() * 0.2 + 0.1) * yRange * -sign
+                const rx1 = (Math.random() * 0.3 + 0.3) * xRange
+                const ry1 = (Math.random() * 0.3 + 0.3) * yRange * -sign
                 const rz1 = Math.random() * zRange
 
                 const ph = phase === OUT ? 1 : -1
 
-                control0.push(rx0 + x1 * ph, ry0 + y1 * ph, rz0 + z1 * ph)
-                control0.push(rx0 + x2 * ph, ry0 + y2 * ph, rz0 + z2 * ph)
-                control0.push(rx0 + x3 * ph, ry0 + y3 * ph, rz0 + z3 * ph)
+                control0.push(x1 + rx0 * ph, y1 + ry0 * ph, z1 + rz0 * ph)
+                control0.push(x2 + rx0 * ph, y2 + ry0 * ph, z2 + rz0 * ph)
+                control0.push(x3 + rx0 * ph, y3 + ry0 * ph, z3 + rz0 * ph)
 
-                control1.push(rx1 + x1 * ph, ry1 + y1 * ph, rz1 + z1 * ph)
-                control1.push(rx1 + x2 * ph, ry1 + y2 * ph, rz1 + z2 * ph)
-                control1.push(rx1 + x3 * ph, ry1 + y3 * ph, rz1 + z3 * ph)
+                control1.push(x1 + rx1 * ph, y1 + ry1 * ph, z1 + rz1 * ph)
+                control1.push(x2 + rx1 * ph, y2 + ry1 * ph, z2 + rz1 * ph)
+                control1.push(x3 + rx1 * ph, y3 + ry1 * ph, z3 + rz1 * ph)
 
 
                 // duration

@@ -18,9 +18,9 @@ export default class{
             maxDelayX: 0.9,
             maxDelayY: 0.125,
             stretch: 0.11,
-            xRange: 100,
-            yRange: 120,
-            zRange: 50,
+            xRange: 50,
+            yRange: 70,
+            zRange: 20,
             width: 192,
             height: 108,
             z: 0.1
@@ -102,13 +102,6 @@ export default class{
                 
         //     }
         // })
-
-
-
-        // test 2
-        // const loader = new THREE.TextureLoader()
-
-        // loader.load('./assets/src/1.jpg', texture => this.onLoadTexture({width, height, widthSeg, heightSeg, texture, group}))
 
 
 
@@ -228,40 +221,6 @@ export default class{
             }
 
         })
-    }
-    onLoadTexture({width, height, widthSeg, heightSeg, texture, group}){
-        // const planeAspect = width / height
-        // const imageAspect = texture.image.width / texture.image.height
-        // const aspect = imageAspect / planeAspect
-  
-        // texture.offset.x = aspect > 1 ? (1 - 1 / aspect) / 2 : 0
-        // texture.repeat.x = aspect > 1 ? 1 / aspect : 1
-  
-        // texture.offset.y = aspect > 1 ? 0 : (1 - aspect) / 2
-        // texture.repeat.y = aspect > 1 ? 1 : aspect
-
-        texture.wrapS = THREE.ClampToEdgeWrapping
-        texture.wrapT = THREE.RepeatWrapping
-
-        this.object = new PlaneObject({
-            width, height, widthSeg, heightSeg,
-            materialOpt: {
-                vertexShader: Shader.vertex,
-                fragmentShader: Shader.fragment,
-                transparent: true,
-                side: THREE.DoubleSide,
-                uniforms: {
-                    uTexture: {value: texture},
-                    uResolution: {value: new THREE.Vector2(this.size.el.w, this.size.el.h)},
-                }
-            }
-        })
-
-        // const {uv} = Method.createAttribute({width, height})
-
-        // this.object.setAttribute('aUv', uv, 2)
-
-        group.add(this.object.get())
     }
 
 
