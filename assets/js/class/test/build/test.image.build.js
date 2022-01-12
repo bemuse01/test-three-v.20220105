@@ -20,9 +20,9 @@ export default class{
             maxDelayX: 0.9,
             maxDelayY: 0.125,
             stretch: 0.11,
-            xRange: 60,
-            yRange: 80,
-            zRange: 30,
+            xRange: 50,
+            yRange: 70,
+            zRange: 20,
             width: 192,
             height: 108,
             z: 0.1
@@ -51,11 +51,11 @@ export default class{
                 phase: OUT,
                 z: 0,
             },
-            // {
-            //     src: './assets/src/2.jpg',
-            //     phase: IN,
-            //     z: 0
-            // }
+            {
+                src: './assets/src/2.jpg',
+                phase: IN,
+                z: 0
+            }
         ]
         this.objects = []
         this.slideTime = this.param.defaultDuration + this.param.defaultDelay + this.param.randomDelay + 1
@@ -198,10 +198,12 @@ export default class{
 
                 console.log(object.getGeometry())
     
-                const position = object.getAttribute('position')
+                // const position = object.getAttribute('position')
+                const {centroid} = object.getGeometry()
+                console.log(centroid)
     
                 const {startPosition, endPosition, control0, control1, duration, delay} = Method.createAnimAttribute({
-                    position, 
+                    centroid, 
                     width: this.width, 
                     height: this.height, 
                     widthSeg: this.widthSeg, 

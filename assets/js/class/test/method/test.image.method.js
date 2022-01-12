@@ -12,8 +12,8 @@ export default {
 
         return {uv: new Float32Array(uv)}
     },
-    createAnimAttribute({position, width, height, widthSeg, heightSeg, xRange, yRange, zRange, defaultDuration, defaultDelay, randomDelay, maxDelayX, maxDelayY, stretch, phase}){
-        const {array} = position
+    createAnimAttribute({centroid, width, height, widthSeg, heightSeg, xRange, yRange, zRange, defaultDuration, defaultDelay, randomDelay, maxDelayX, maxDelayY, stretch, phase}){
+        const array = centroid
         const startPosition = []
         const endPosition = []
         const control0 = []
@@ -54,8 +54,8 @@ export default {
 
 
                 // cubic bezier control points
-                const cx = (x1 + x2 + x3) / 3
-                const cy = (y1 + y2 + y3) / 3
+                const cx = x1
+                const cy = y1
                 const sign = Math.sign(cy)
 
                 const rx0 = (Math.random() * 0.2 + 0.1) * xRange

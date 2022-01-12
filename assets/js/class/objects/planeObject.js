@@ -44,6 +44,7 @@ export default class{
         const positions = []
         const normals = []
         const uv = []
+        const centroid = []
 
         const pA = new THREE.Vector3()
         const pB = new THREE.Vector3()
@@ -60,24 +61,29 @@ export default class{
                 const p2 = indexArr[idx + 1] * 3
                 const p3 = indexArr[idx + 2] * 3
 
-                const a = 0
-                const b = 0
-
-                const x1 = posArr[p1] + a
-                const y1 = posArr[p1 + 1] + b
+                const x1 = posArr[p1]
+                const y1 = posArr[p1 + 1]
                 const z1 = posArr[p1 + 2]
 
-                const x2 = posArr[p2] + a
-                const y2 = posArr[p2 + 1] + b
+                const x2 = posArr[p2]
+                const y2 = posArr[p2 + 1]
                 const z2 = posArr[p2 + 2]
 
-                const x3 = posArr[p3] + a
-                const y3 = posArr[p3 + 1] + b
+                const x3 = posArr[p3]
+                const y3 = posArr[p3 + 1]
                 const z3 = posArr[p3 + 2]
 
-                positions.push(x1, y1, z1)
-                positions.push(x2, y2, z2)
-                positions.push(x3, y3, z3)
+                const cx = (x1 + x2 + x3) / 3
+                const cy = (y1 + y2 + y3) / 3
+                const cz = (z1 + z2 + z3) / 3
+
+                centroid.push(cx, cy, cz)
+                centroid.push(cx, cy, cz)
+                centroid.push(cx, cy, cz)
+
+                positions.push(x1 - cx, y1 - cy, z1 - cz)
+                positions.push(x2 - cx, y2 - cy, z2 - cz)
+                positions.push(x3 - cx, y3 - cy, z3 - cz)
 
                 pA.set(x1, y1, z1)
                 pB.set(x2, y2, z2)
@@ -106,6 +112,7 @@ export default class{
         geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
         geometry.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3))
         geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2))
+        geometry.centroid = centroid
 
         return geometry
     }

@@ -24,7 +24,8 @@ export default {
             // p = uPhase == 0 ? 1.0 - p : p;
             float r = uPhase == 0 ? 1.0 - p : p;
 
-            newPosition = cubicBezier(aStartPosition, aControl0, aControl1, aEndPosition, p) * r;
+            newPosition *= r;
+            newPosition += cubicBezier(aStartPosition, aControl0, aControl1, aEndPosition, p);
 
             gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
 
