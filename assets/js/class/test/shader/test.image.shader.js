@@ -21,12 +21,13 @@ export default {
 
             float p = clamp(uTime - aDelay, 0.0, aDuration) / aDuration;
 
-            p = uPhase == 0 ? 1.0 - p : p;
+            // p = uPhase == 0 ? 1.0 - p : p;
+            float r = uPhase == 0 ? 1.0 - p : p;
 
-            newPosition = cubicBezier(aStartPosition, aControl0, aControl1, aEndPosition, p);
+            newPosition = cubicBezier(aStartPosition, aControl0, aControl1, aEndPosition, p) * r;
 
             gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
-        
+
             vUv = uv;
         }
     `,

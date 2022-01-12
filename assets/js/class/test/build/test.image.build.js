@@ -49,13 +49,13 @@ export default class{
             {
                 src: './assets/src/1.jpg',
                 phase: OUT,
-                z: this.param.z,
+                z: 0,
             },
-            {
-                src: './assets/src/2.jpg',
-                phase: IN,
-                z: 0
-            }
+            // {
+            //     src: './assets/src/2.jpg',
+            //     phase: IN,
+            //     z: 0
+            // }
         ]
         this.objects = []
         this.slideTime = this.param.defaultDuration + this.param.defaultDelay + this.param.randomDelay + 1
@@ -270,7 +270,7 @@ export default class{
     updateTween({time, opacity, z}, {uTime, uOpacity}, group){
         uTime.value = time
         // uOpacity.value = opacity
-        group.position.z = z
+        // group.position.z = z
     }
 
 
