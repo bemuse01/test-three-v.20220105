@@ -181,6 +181,7 @@ export default class{
                     height: this.height, 
                     widthSeg: this.widthSeg, 
                     heightSeg: this.heightSeg,
+                    blending: THREE.AdditiveBlending,
                     materialOpt: {
                         vertexShader: Shader.vertex,
                         fragmentShader: Shader.fragment,
@@ -239,7 +240,7 @@ export default class{
         const uniforms = object.getMaterial().uniforms
 
         const tw = new TWEEN.Tween(start)
-        .to(end, 5000)
+        .to(end, 6000)
         .onUpdate(() => this.updateTween(start, uniforms, group))
         .easing(TWEEN.Easing.Quadratic.InOut)
         .repeat(Infinity)
