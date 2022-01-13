@@ -11,7 +11,7 @@ export default class{
 
         this.param = {
             scale: 0.6,
-            div: 2,
+            div: 1,
             defaultDuration: 1.5,
             defaultDelay: 1.2,
             randomDelay: 0.8,
@@ -19,7 +19,7 @@ export default class{
             maxDelayY: 0.125,
             stretch: 0.11,
             xRange: 50,
-            yRange: 70,
+            yRange: 100,
             zRange: 20,
             width: 192,
             height: 108,
