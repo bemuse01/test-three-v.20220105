@@ -194,11 +194,8 @@ export default class{
                     }
                 })
 
-                console.log(object.getGeometry())
-    
                 // const position = object.getAttribute('position')
                 const {centroid} = object.getGeometry()
-                console.log(centroid)
     
                 const {startPosition, endPosition, control0, control1, duration, delay} = Method.createAnimAttribute({
                     centroid, 

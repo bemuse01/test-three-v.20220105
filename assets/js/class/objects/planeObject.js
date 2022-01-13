@@ -38,8 +38,12 @@ export default class{
         const indexArr = this.index.array
         // const indexCnt = this.index.count
 
+        console.log(indexArr)
+
         const w = this.widthSeg * 2
         const h = this.heightSeg
+        const col = this.widthSeg + 1
+        const row = this.heightSeg + 1
 
         const positions = []
         const normals = []
@@ -102,12 +106,23 @@ export default class{
                 normals.push(nx, ny, nz)
                 normals.push(nx, ny, nz)
                 normals.push(nx, ny, nz)
-                
-                uv.push(j / w, 1 - (i / h))
-                uv.push(j / w, 1 - (i / h))
-                uv.push(j / w, 1 - (i / h))
+
+                const r1 = ~~(indexArr[idx] / col)
+                const c1 = indexArr[idx] % col
+          
+                const r2 = ~~(indexArr[idx + 1] / col)
+                const c2 = indexArr[idx + 1] % col
+          
+                const r3 = ~~(indexArr[idx + 2] / col)
+                const c3 = indexArr[idx + 2] % col
+
+                uv.push(c1 / col, 1 - r1 / (row - 1))
+                uv.push(c2 / col, 1 - r2 / (row - 1))
+                uv.push(c3 / col, 1 - r3 / (row - 1))
             }
         }
+
+        console.log(uv)
 
         geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
         geometry.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3))
