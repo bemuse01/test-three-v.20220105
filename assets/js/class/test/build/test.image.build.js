@@ -9,8 +9,6 @@ export default class{
     constructor({group, size}){
         this.size = size
 
-        console.log(this.size.obj)
-
         this.param = {
             scale: 0.6,
             div: 2,
@@ -58,7 +56,7 @@ export default class{
             }
         ]
         this.objects = []
-        this.slideTime = this.param.defaultDuration + this.param.defaultDelay + this.param.randomDelay + 1
+        this.slideTime = this.param.defaultDuration + this.param.defaultDelay + this.param.randomDelay
 
         this.tweens = []
 
@@ -260,7 +258,6 @@ export default class{
         .onUpdate(() => this.updateTween(start, uniforms, group))
         .easing(TWEEN.Easing.Quadratic.InOut)
         .repeat(Infinity)
-        .repeatDelay(1000)
         .yoyo(true)
 
         this.tweens.push(tw)
