@@ -11,7 +11,7 @@ export default class{
 
         this.param = {
             scale: 0.6,
-            div: 5,
+            div: 2,
             defaultDuration: 1.5,
             defaultDelay: 1.2,
             randomDelay: 0.8,
@@ -71,7 +71,7 @@ export default class{
 
 
     // create
-    create(group){
+    async create(group){
 
         // test 1
         // const plane = new THREE.PlaneGeometry(width, height, widthSeg, heightSeg)
@@ -160,73 +160,70 @@ export default class{
         //     group.add(this.object.get())
         // }
 
-
+        const imgs = await Promise.all(this.data.map(({src}) => this.loadImage(src)))
 
         // test 4
         this.data.forEach(({src, phase, z}, idx) => {
 
             const positionGroup = new THREE.Group()
             
-            const img = new Image()
-            img.src = src
+            const img = imgs[idx]
 
-            img.onload = () => {
-                const canvas = Method.createTextureFromCanvas({img, size: {w: this.textureWidth, h: this.textureHeight}, ...this.param})
-                const texture = new THREE.CanvasTexture(canvas)
-    
-                const object = new PlaneObject({
-                    width: this.width, 
-                    height: this.height, 
-                    widthSeg: this.widthSeg, 
-                    heightSeg: this.heightSeg,
-                    // blending: THREE.AdditiveBlending,
-                    // side: THREE.DoubleSide,
-                    materialOpt: {
-                        vertexShader: Shader.vertex,
-                        fragmentShader: Shader.fragment,
-                        transparent: true,
-                        uniforms: {
-                            uTexture: {value: texture},
-                            uTime: {value: null},
-                            uPhase: {value: phase},
-                            uOpacity: {value: 1}
-                        }
+            const canvas = Method.createTextureFromCanvas({img, size: {w: this.textureWidth, h: this.textureHeight}, ...this.param})
+            const texture = new THREE.CanvasTexture(canvas)
+
+            const object = new PlaneObject({
+                width: this.width, 
+                height: this.height, 
+                widthSeg: this.widthSeg, 
+                heightSeg: this.heightSeg,
+                // blending: THREE.AdditiveBlending,
+                // side: THREE.DoubleSide,
+                materialOpt: {
+                    vertexShader: Shader.vertex,
+                    fragmentShader: Shader.fragment,
+                    transparent: true,
+                    uniforms: {
+                        uTexture: {value: texture},
+                        uTime: {value: null},
+                        uPhase: {value: phase},
+                        uOpacity: {value: 1}
                     }
-                })
-
-                // const position = object.getAttribute('position')
-                const {centroid} = object.getGeometry()
-    
-                const {startPosition, endPosition, control0, control1, duration, delay} = Method.createAnimAttribute({
-                    centroid, 
-                    width: this.width, 
-                    height: this.height, 
-                    widthSeg: this.widthSeg, 
-                    heightSeg: this.heightSeg, 
-                    ...this.param,
-                    phase
-                })
-    
-                object.setAttribute('aStartPosition', new Float32Array(startPosition), 3)
-                object.setAttribute('aEndPosition', new Float32Array(endPosition), 3)
-                object.setAttribute('aControl0', new Float32Array(control0), 3)
-                object.setAttribute('aControl1', new Float32Array(control1), 3)
-                object.setAttribute('aDuration', new Float32Array(duration), 1)
-                object.setAttribute('aDelay', new Float32Array(delay), 1)
-
-                positionGroup.add(object.get())
-
-                positionGroup.position.set(0, 0, z)
-
-                group.add(positionGroup)
-
-                this.objects.push(object)
-
-                this.createTween(object, phase, z, positionGroup)
-
-                if(idx === this.data.length - 1){
-                    this.startTween()
                 }
+            })
+
+            // const position = object.getAttribute('position')
+            const {centroid} = object.getGeometry()
+
+            const {startPosition, endPosition, control0, control1, duration, delay} = Method.createAnimAttribute({
+                centroid, 
+                width: this.width, 
+                height: this.height, 
+                widthSeg: this.widthSeg, 
+                heightSeg: this.heightSeg, 
+                ...this.param,
+                phase
+            })
+
+            object.setAttribute('aStartPosition', new Float32Array(startPosition), 3)
+            object.setAttribute('aEndPosition', new Float32Array(endPosition), 3)
+            object.setAttribute('aControl0', new Float32Array(control0), 3)
+            object.setAttribute('aControl1', new Float32Array(control1), 3)
+            object.setAttribute('aDuration', new Float32Array(duration), 1)
+            object.setAttribute('aDelay', new Float32Array(delay), 1)
+
+            positionGroup.add(object.get())
+
+            positionGroup.position.set(0, 0, z)
+
+            group.add(positionGroup)
+
+            this.objects.push(object)
+
+            this.createTween(object, phase, z, positionGroup)
+
+            if(idx === this.data.length - 1){
+                this.startTween()
             }
 
         })
@@ -241,6 +238,13 @@ export default class{
         // })))
 
         // console.log(geometry)
+    }
+    loadImage(src){
+        return new Promise((resolve, reject) => {
+            const img = new Image()
+            img.src = src
+            img.onload = () => resolve(img)
+        })
     }
 
 
